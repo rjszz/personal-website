@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="背好你的小本本," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="故事的开头：某一天，我突然兴致一来，想起了去逛windows的应用商店(Microsoft Soft)（好吧，我承认我是闲的没事做），然后居然发现windows商店里面出现了这个东西Ubuntu16？！！惊了，windows居然提供ubuntu子系统了，怀着激动的心，马上下载下来看看。 于是，当当当成功的得到了一个黑乎乎的终端，嘿嘿嘿，对于我一个辣鸡程序员来说简直是鸡肋啊。于是，果断卸载。^ V">
+<meta property="og:type" content="article">
+<meta property="og:title" content="windows与子系统ubuntu的完美共生:cmder的强大魅力">
+<meta property="og:url" content="http://yoursite.com/2020/03/01/windows%E4%B8%8E%E5%AD%90%E7%B3%BB%E7%BB%9Fubuntu%E7%9A%84%E5%AE%8C%E7%BE%8E%E5%85%B1%E7%94%9F-cmder%E7%9A%84%E5%BC%BA%E5%A4%A7%E9%AD%85%E5%8A%9B/index.html">
+<meta property="og:site_name" content="Rjszz Blog">
+<meta property="og:description" content="故事的开头：某一天，我突然兴致一来，想起了去逛windows的应用商店(Microsoft Soft)（好吧，我承认我是闲的没事做），然后居然发现windows商店里面出现了这个东西Ubuntu16？！！惊了，windows居然提供ubuntu子系统了，怀着激动的心，马上下载下来看看。 于是，当当当成功的得到了一个黑乎乎的终端，嘿嘿嘿，对于我一个辣鸡程序员来说简直是鸡肋啊。于是，果断卸载。^ V">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191211225239223.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191211225549236.JPG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191211231509514.JPG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191211232858516.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191211233346719.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191211233702355.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191211234156901.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191211234712667.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019121123453628.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191211235942515.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191212000644678.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019121200154652.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191212001439497.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191212002024889.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191212002350941.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2020-03-01T15:45:37.000Z">
+<meta property="article:modified_time" content="2020-03-01T16:01:35.218Z">
+<meta property="article:author" content="Rjszz">
+<meta property="article:tag" content="背好你的小本本">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20191211225239223.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/01/windows与子系统ubuntu的完美共生-cmder的强大魅力/"/>
+
+
+
+
+
+  <title>windows与子系统ubuntu的完美共生:cmder的强大魅力 | Rjszz Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rjszz Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Nothing is all</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/01/windows%E4%B8%8E%E5%AD%90%E7%B3%BB%E7%BB%9Fubuntu%E7%9A%84%E5%AE%8C%E7%BE%8E%E5%85%B1%E7%94%9F-cmder%E7%9A%84%E5%BC%BA%E5%A4%A7%E9%AD%85%E5%8A%9B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rjszz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rjszz Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">windows与子系统ubuntu的完美共生:cmder的强大魅力</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-01T23:45:37+08:00">
+                2020-03-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%AC%E6%9C%AC/" itemprop="url" rel="index">
+                    <span itemprop="name">本本</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="故事的开头："><a href="#故事的开头：" class="headerlink" title="故事的开头："></a>故事的开头：</h1><p>某一天，我突然兴致一来，想起了去逛windows的应用商店(Microsoft Soft)（好吧，我承认我是闲的没事做），然后居然发现windows商店里面出现了这个东西<br><img src="https://img-blog.csdnimg.cn/20191211225239223.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>Ubuntu16？！！惊了，windows居然提供<strong>ubuntu子系统</strong>了，怀着激动的心，马上下载下来看看。</p>
+<p>于是，当当当<br><img src="https://img-blog.csdnimg.cn/20191211225549236.JPG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>成功的得到了一个黑乎乎的终端，嘿嘿嘿，对于我一个辣鸡程序员来说简直是鸡肋啊。于是，果断卸载。^ V ^</p>
+<p>当然，故事还没结束，后来的后来，和一位同学聊起了这件事。<br>我：那个啊，也太鸡肋了，就一个终端，我还是喜欢图形界面啊<br>同学：？？？我惊了，这么好一个宝贝，你居然嫌弃<br>我：怎么说？<br>同学：叽里呱啦叽里呱啦<br>于是，我升华了</p>
+<h1 id="正文开始"><a href="#正文开始" class="headerlink" title="正文开始"></a>正文开始</h1><p>准备材料：Windows10   Windows10应用商店    cmder</p>
+<h2 id="第一步：去windows商店下载一个Linux子系统"><a href="#第一步：去windows商店下载一个Linux子系统" class="headerlink" title="- 第一步：去windows商店下载一个Linux子系统"></a>- <strong>第一步：去windows商店下载一个Linux子系统</strong></h2><p>我看了一下，商店里主流的Linux系统都有，Debian，CentOS，Ubuntu啥的都有，挑一款自己喜欢的（我选的是Ubuntu16）</p>
+<p>下载好后就是刚刚那个终端（在新安装的软件就可以找到）<br><img src="https://img-blog.csdnimg.cn/20191211231509514.JPG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="第二步：下载cmder，进行相关配置（画龙点睛之笔）"><a href="#第二步：下载cmder，进行相关配置（画龙点睛之笔）" class="headerlink" title="- 第二步：下载cmder，进行相关配置（画龙点睛之笔）"></a>- <strong>第二步：下载cmder，进行相关配置（画龙点睛之笔）</strong></h2><p>cmder，被称为Windows上的程序员神器，能够完美的将终端进行统筹融合，并且提供很好看的界面，让你从此告别cmd和powerhell那丑陋的界面<br>        话不多说，抛链接：<a href="https://cmder.net/" target="_blank" rel="noopener"><strong>Cmder官网</strong></a>    （下载<strong>Full版</strong>）<br>        找个合适的路径（最好没中文），解压</p>
+<p><strong>配置1：将cmder安装路径加入的全局path里</strong><br>    这个就不多说了，作为一名程序猿，不会配环境也会知道怎么百度配环境了<br>    <img src="https://img-blog.csdnimg.cn/20191211232858516.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p> <strong>配置2：配置右键快捷启动</strong><br>我们要想的，能够在任意地方召唤出我们的终端，就像是在linux一样。<br><strong>以管理员身份打开cmd，执行以下命令即可：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 设置任意地方鼠标右键启动Cmder</span><br><span class="line">Cmder.exe /REGISTER ALL</span><br></pre></td></tr></table></figure>
+
+<p>接下来，在任意地方右键就可以看到令人心动的Cmder了：<br><img src="https://img-blog.csdnimg.cn/20191211233346719.png" alt="在这里插入图片描述"></p>
+<p>   <strong>配置3：界面效果的设置</strong><br>           打开Cmder后，按</p>
+<blockquote>
+<p>windows+alt+p</p>
+</blockquote>
+<p>进入Cmder的设置界面，字体啊，主题啊啥的，咋好看咋整。可以慢慢研究（有中文设置）<br><img src="https://img-blog.csdnimg.cn/20191211233702355.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>   <strong>配置4：将Cmder默认的命令提示符”λ”改为“$”</strong><br>               这个主要是习惯问题，还是习惯Linux下的 $<br>               进入cmder的安装路径<br>               在cmder\vendor中的clink.lua内做如下修改”λ”替换成” $ “<br>   <img src="https://img-blog.csdnimg.cn/20191211234156901.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>   <strong>配置5：将子系统的终端添加到Cmder中（重中之重！）</strong><br>           我们要想利用Cmder来启动linux终端，就要进行相应的配置，具体做法如下：</p>
+<p>打开Cmder设置-&gt;启动-&gt;命令行<br>输入</p>
+<blockquote>
+<p>bash -cur_console:p</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20191211234712667.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>不同系统可能终端名(bash)不一样，我不太了解，如果出错，可以自行百度</p>
+<p>这时候，可以看到通用里面就是你刚刚设置好的shell了<br><img src="https://img-blog.csdnimg.cn/2019121123453628.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>关闭Cmder，再次打开，就是Linux的shell了</p>
+<h2 id="第三步：美化Linux终端"><a href="#第三步：美化Linux终端" class="headerlink" title="- 第三步：美化Linux终端"></a>- <strong>第三步：美化Linux终端</strong></h2><p>   其实这一步可有可无，但是最为一位作为追求完美的程序猿，我们怎么能够容忍Linux那不甚好用的shell呢。<br>   采用大多数人都知道的方案——<strong>oh my zsh</strong></p>
+<p><strong>1.首先安装    zsh 以及 git（ubuntu）</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install zsh -y</span><br><span class="line">sudo apt-get install git -y</span><br></pre></td></tr></table></figure>
+<p>Centos如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install zsh -y</span><br><span class="line">sudo yum install git -y</span><br></pre></td></tr></table></figure>
+
+<p>下面的命令都是一样的：</p>
+<p>克隆oh-my-zsh的仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh</span><br></pre></td></tr></table></figure>
+
+<p>备份原来的zshrc，如果文件存在的话</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp ~/.zshrc ~/.zshrc.bak</span><br></pre></td></tr></table></figure>
+
+<p>创建一个新的zsh配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc</span><br></pre></td></tr></table></figure>
+
+<p>改变默认的Shell</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chsh -s /bin/zsh</span><br></pre></td></tr></table></figure>
+<p>重启一下Cmder</p>
+<p><strong>2.设置自动启动zsh</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>接下来需要用到vim了，不知道指令的话，可以去找一找</p>
+<p>在.bashrc的最开始加上下面的语句：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> test -t <span class="number">1</span>; then</span><br><span class="line">    exec zsh</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20191211235942515.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>好了，保存之后，再次退出Cmder，进入就是oh-my-zsh的界面了</p>
+<p><strong>3.更改oh-my-zsh主题以及添加插件</strong></p>
+<p><strong>更改主题：进入.zshrc文件</strong>    </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.zshrc</span><br></pre></td></tr></table></figure>
+<p>ZSH_THEME=”ys”<br>后面跟的就是主题，我这里设置的是ys，这里给出一个git链接，里面的给出的主题都是oh-mu-zsh支持的，可以直接更改就可生效：<a href="https://github.com/ohmyzsh/ohmyzsh/wiki/themes" target="_blank" rel="noopener">oh-my-zsh主题合集</a><br><img src="https://img-blog.csdnimg.cn/20191212000644678.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><strong>添加插件：命令提示</strong><br>    （我这里只是安装了 <strong>命令提示</strong>  这一个插件，其实oh-my-zsh还有很多，可以参考我下面给出的博客链接，方法都类似。）</p>
+<p>获得插件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/.oh-my-zsh/plugins/</span><br><span class="line">mkdir incr &amp;&amp; <span class="built_in">cd</span> incr    <span class="comment">#创建incr目录并且进入</span></span><br><span class="line">wget http://mimosa-pudica.net/src/incr-0.2.zsh   <span class="comment">#获得插件</span></span><br></pre></td></tr></table></figure>
+<p>进入.zshrc文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.zshrc</span><br></pre></td></tr></table></figure>
+<p>在文件末尾插上下面语句(一定要放在最后面)：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">compaudit | xargs chmod go-w  <span class="comment">#如果不添加这句，以后每次打开都会询问，很不方便</span></span><br><span class="line"><span class="built_in">source</span> ~/.oh-my-zsh/plugins/incr/incr*.zsh</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/2019121200154652.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><strong>刷新配置</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.zshrc</span><br></pre></td></tr></table></figure>
+<p>好了好了，现在所有的东西都弄好了，再次重启Cmder，进入就能看到美美的shell界面啦</p>
+<p>展示我的最终成果（自我感觉良好^ V ^）：</p>
+<p><img src="https://img-blog.csdnimg.cn/20191212001439497.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h2><p>可能有的同学要问了，折腾了这么久，到底是为了那般？<br>给你看个例子你就懂了<br>现在我的windows的桌面有一个.c文件<br><img src="https://img-blog.csdnimg.cn/20191212002024889.png" alt="在这里插入图片描述"><br>现在我右键打开Cmder(默认的是Linux的shell)：<br>可以直接输入指令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -o HelloWorld HelloWorld.c</span><br><span class="line">./HelloWorld</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/20191212002350941.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>当当当，结果直接出来了。怎么样，是不是很熟悉，没错，这就相当于在Linux下敲指令！<br><strong>在Windows下用Linux指令</strong><br>而且是任何位置都能右键打开哦，舒服啊~<br>如果还没缓过神来，你得品，你得细品</p>
+<p>———————————————————————————————————————————————<br>参考博客：<br><a href="https://www.jianshu.com/p/5b7c985240a7" target="_blank" rel="noopener">使用Cmder替换cmd，让开发更高效</a><br><a href="https://www.jianshu.com/p/3b2b3e2a3824" target="_blank" rel="noopener">windows 10 linux子系统oh-my-zsh与Cmder配置-2018</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E8%83%8C%E5%A5%BD%E4%BD%A0%E7%9A%84%E5%B0%8F%E6%9C%AC%E6%9C%AC/" rel="tag"># 背好你的小本本</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/01/Java%E7%9A%84%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94Collection%EF%BC%8CArrayList%EF%BC%8CLinkedList%EF%BC%8CHashSet%EF%BC%8CTreeSet%EF%BC%8CHashMap/" rel="next" title="Java的集合框架简单学习笔记——Collection，ArrayList，LinkedList，HashSet，TreeSet，HashMap">
+                <i class="fa fa-chevron-left"></i> Java的集合框架简单学习笔记——Collection，ArrayList，LinkedList，HashSet，TreeSet，HashMap
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/01/chmod%20777%20%E5%88%B0%E5%BA%95%E6%98%AF%E5%95%A5%20%EF%BC%9F%EF%BC%9F%EF%BC%9F%E7%9C%8B%E5%AE%8C%E8%BF%99%E4%B8%AA%E4%BD%A0%E5%B0%B1%E5%AE%8C%E5%85%A8%E6%87%82%E4%BA%86%EF%BC%81/" rel="prev" title="chmod 777 到底是啥 ???看完这个你就完全懂了！">
+                chmod 777 到底是啥 ???看完这个你就完全懂了！ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Rjszz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#故事的开头："><span class="nav-number">1.</span> <span class="nav-text">故事的开头：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正文开始"><span class="nav-number">2.</span> <span class="nav-text">正文开始</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一步：去windows商店下载一个Linux子系统"><span class="nav-number">2.1.</span> <span class="nav-text">- 第一步：去windows商店下载一个Linux子系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二步：下载cmder，进行相关配置（画龙点睛之笔）"><span class="nav-number">2.2.</span> <span class="nav-text">- 第二步：下载cmder，进行相关配置（画龙点睛之笔）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三步：美化Linux终端"><span class="nav-number">2.3.</span> <span class="nav-text">- 第三步：美化Linux终端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写在后面"><span class="nav-number">2.4.</span> <span class="nav-text">写在后面</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rjszz</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

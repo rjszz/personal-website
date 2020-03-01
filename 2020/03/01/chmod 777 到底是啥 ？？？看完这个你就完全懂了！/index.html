@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="My name is Linus, and I am your God," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="0X00 前言   可能对于Linux新手而言，很不解的一件事就是：   有时在访问文件xxx时，总是出现权限问题，但是上网一查，大佬们直接一句话：   chmod 777 xxx   完事！   相信你当时的心情是这样的：       我勒个神奇    然后之后遇到权限就照葫芦画瓢的chmod 777，也算是美滋滋。    不过，作为一个打破砂锅的程序猿怎么能就知道chmod 777！    当">
+<meta property="og:type" content="article">
+<meta property="og:title" content="chmod 777 到底是啥 ???看完这个你就完全懂了！">
+<meta property="og:url" content="http://yoursite.com/2020/03/01/chmod%20777%20%E5%88%B0%E5%BA%95%E6%98%AF%E5%95%A5%20%EF%BC%9F%EF%BC%9F%EF%BC%9F%E7%9C%8B%E5%AE%8C%E8%BF%99%E4%B8%AA%E4%BD%A0%E5%B0%B1%E5%AE%8C%E5%85%A8%E6%87%82%E4%BA%86%EF%BC%81/index.html">
+<meta property="og:site_name" content="Rjszz Blog">
+<meta property="og:description" content="0X00 前言   可能对于Linux新手而言，很不解的一件事就是：   有时在访问文件xxx时，总是出现权限问题，但是上网一查，大佬们直接一句话：   chmod 777 xxx   完事！   相信你当时的心情是这样的：       我勒个神奇    然后之后遇到权限就照葫芦画瓢的chmod 777，也算是美滋滋。    不过，作为一个打破砂锅的程序猿怎么能就知道chmod 777！    当">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200219200031908.jpg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200219204854821.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200219210110215.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200219210356492.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200219211703721.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200219214329461.jpg">
+<meta property="article:published_time" content="2020-03-01T15:48:16.000Z">
+<meta property="article:modified_time" content="2020-03-01T16:05:59.363Z">
+<meta property="article:author" content="Rjszz">
+<meta property="article:tag" content="My name is Linus, and I am your God">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200219200031908.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/01/chmod 777 到底是啥 ？？？看完这个你就完全懂了！/"/>
+
+
+
+
+
+  <title>chmod 777 到底是啥 ???看完这个你就完全懂了！ | Rjszz Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rjszz Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Nothing is all</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/01/chmod%20777%20%E5%88%B0%E5%BA%95%E6%98%AF%E5%95%A5%20%EF%BC%9F%EF%BC%9F%EF%BC%9F%E7%9C%8B%E5%AE%8C%E8%BF%99%E4%B8%AA%E4%BD%A0%E5%B0%B1%E5%AE%8C%E5%85%A8%E6%87%82%E4%BA%86%EF%BC%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rjszz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rjszz Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">chmod 777 到底是啥 ???看完这个你就完全懂了！</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-01T23:48:16+08:00">
+                2020-03-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h2><p>   可能对于Linux新手而言，很不解的一件事就是：<br>   有时在访问文件xxx时，总是出现权限问题，但是上网一查，大佬们直接一句话：<br>   chmod 777 xxx<br>   完事！<br>   相信你当时的心情是这样的：<br>   <img src="https://img-blog.csdnimg.cn/20200219200031908.jpg" alt="在这里插入图片描述"><br>    我勒个神奇<br>    然后之后遇到权限就照葫芦画瓢的chmod 777，也算是美滋滋。<br>    不过，作为一个打破砂锅的程序猿怎么能就知道chmod 777！<br>    当然提到chmod，我们一定先说清楚Linux的用户管理</p>
+<h2 id="0X01-Linux用户与群组"><a href="#0X01-Linux用户与群组" class="headerlink" title="0X01 Linux用户与群组"></a>0X01 Linux用户与群组</h2><h4 id="1、用户"><a href="#1、用户" class="headerlink" title="1、用户"></a><strong>1、用户</strong></h4><p>   我们知道，Linux有一个超级用户——<strong>root</strong>，它就是整个Linux系统的完全掌控者啊，只要root想做就没有root不能做的。<br>   因此为了安全性等种种考虑，Linux设计者设计了<strong>普通用户</strong>，比如刚安装Linux的时候会创建一个用户就是一个普通用户(假设叫 j )，当然你可以用adduser指令来增添一个新的用户(当然需要超级权限)：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo adduser rjs</span><br></pre></td></tr></table></figure>
+<p>   此时就Linux就有了root，j，rjz三个用户，其中root是超级用户，j和rjs都是普通用户</p>
+<h4 id="2、群组"><a href="#2、群组" class="headerlink" title="2、群组"></a><strong>2、群组</strong></h4><p>   既然有了许多的用户就有了<strong>群组</strong>的概念，因为你认知的人多了，也就自然而然的分组了，有的是家人，有的是朋友，有的是同学等等。家人，朋友，同学就是群组：<br>   <img src="https://img-blog.csdnimg.cn/20200219204854821.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>   有了用户和群组的概念，接下来就能好好讲权限问题了</p>
+<h2 id="0X01-Linux文件权限"><a href="#0X01-Linux文件权限" class="headerlink" title="0X01 Linux文件权限"></a>0X01 Linux文件权限</h2><h4 id="1、权限描述"><a href="#1、权限描述" class="headerlink" title="1、权限描述"></a><strong>1、权限描述</strong></h4><p>   既然有了用户之分，那么一个用户(比如： j)创建的文件一般来讲就不会给其它用户（比如：rjs）随便篡改，也就是不能给其他人写（w），当然看看（r）还是可以的，也不用那么小气对吧23333<br>   所以Linux的对于同一个文件，不同的用户是有不同的权限的，权限分别有：读( r)，写(w)，运行(x)<br>  <img src="https://img-blog.csdnimg.cn/20200219210110215.png" alt="在这里插入图片描述"><br>   我们可以采用 ls -l 命令来查看文件权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls	-l</span><br></pre></td></tr></table></figure>
+<p>   会得到如下信息：<br><img src="https://img-blog.csdnimg.cn/20200219210356492.png" alt="在这里插入图片描述"><br>   可以看到，本目录下有一个文件夹：Tencent Files            一个文档：wget-log<br>   每一个文件(文件夹)前都有这样的描述：<br>   <strong>drwxr-xr-x<br>   -rwx——-</strong><br>   这就是文件的对于用户的权限！<br>   那这是什么意思呢？且往下看</p>
+<h4 id="2、文件权限"><a href="#2、文件权限" class="headerlink" title="2、文件权限"></a><strong>2、文件权限</strong></h4><p>   上面的描述中一共有10位，其中第一位表示文件的属性：<br>   d：表示是一个文件夹<br>   l：表示是一个链接<br>   -：表示是一个普通的文件<br>   <strong>注意：这是第一位和后面的不一样</strong></p>
+<p>   后面的就是我们的今天的主角——权限描述了。<br>   可以看到是一串的    读( r)、写(w)、运行(x)    组成了，那为什么一排有好多个重复出现的 r、w 和 x 呢？<br>   那是因为访问权限是<strong>按照用户划分</strong>的：<br>   <img src="https://img-blog.csdnimg.cn/20200219211703721.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>   也就是说，从第2位开始，每三位分别表示    文件所有者、群组用户、其他用户  的权限<br>   比如：<br>   <strong>drwxr-xr-x</strong><br>   表示文件夹 Tencent Files     对于所有者 j 是 可读可写可执行的(rwx)，而对于在同一个群组中的用户是 可写不可读可执行 的(r-x)，对于其他用户也是 可写不可读可执行 的(r-x)<br>   有了这个，我们的今天的主角——<strong>chmod</strong> 终于要登场了！</p>
+<h2 id="0X10-chmod-命令：修改文件的访问权限"><a href="#0X10-chmod-命令：修改文件的访问权限" class="headerlink" title="0X10 chmod 命令：修改文件的访问权限"></a>0X10 chmod 命令：修改文件的访问权限</h2><p>   chmod 就是用来修改文件权限访问权限的！没错就是上面所说的权限！<br>   那 777 又是啥呢？？？<br>  您嘞别急，请往下看</p>
+<h4 id="1、用数字来分配权限：chmod-的绝对用法"><a href="#1、用数字来分配权限：chmod-的绝对用法" class="headerlink" title="1、用数字来分配权限：chmod 的绝对用法"></a>1、用数字来分配权限：chmod 的绝对用法</h4><p>事实上，Linux 系统为每种权限（r、w 和 x）分配了对应的数字：<br>权限     | 数字<br>——– | —–<br>r  | 4<br>w| 2<br>x  | 1</p>
+<p>   所以，如果我们要合并这些权限，就需要做简单的加法了：<strong>将对应的数字相加</strong>。</p>
+<p>   假如我们要分配读、写权限，那么我们就要用 4+2，就等于 6。数字 6 表示<strong>具有读和写权限</strong>。</p>
+<p>以下是可能的组合形式：<br>权限     | 数字    |  计算<br>——– | ——–|——–<br>—  |    0    | 0 + 0 + 0<br>r–    |4    |4 + 0 + 0<br>-w-    |2|    0 + 2 + 0<br>–x   |    1    |0 + 0 + 1<br>rw-    |6    |4 + 2 + 0<br>-wx    |3|    0 + 2 + 1<br>r-x    |5    |4 + 0 + 1<br>rwx    |7|    4 + 2 + 1</p>
+<p>   所以，对于访问权限的三组（所有者的权限、群组用户的权限、其他用户的权限），我们只要分别做加法就可以了，然后把三个和连起来。</p>
+<p>例如，640 分别表示：</p>
+<ul>
+<li>文件的所有者有读和写的权限；</li>
+<li>文件所在群组的其他用户具有读的权限；</li>
+<li>除此之外的其他用户没有任何权限。</li>
+</ul>
+<p>因此，我们可以给的最宽泛的权限就是 777：所有者，群组用户，其他用户都有读、写和运行的权限。这样，所有人就都可以对此文件“为所欲为”了。</p>
+<p>相反，如果权限是 000，那么没有人能对此文件做什么。当然，除了 root 之外，root 可以做任何事。<br>   看到现在是不是有一种豁然开朗的感觉：<br>   <img src="https://img-blog.csdnimg.cn/20200219214329461.jpg" alt="在这里插入图片描述"><br>   但是既然看到这里了，不如继续往下看</p>
+<h4 id="2、用字母来分配权限：chmod-的相对用法"><a href="#2、用字母来分配权限：chmod-的相对用法" class="headerlink" title="2、用字母来分配权限：chmod 的相对用法"></a>2、用字母来分配权限：chmod 的相对用法</h4><p>   我们还可以用字母来分配权限，原理相似，但是又是不必写出所有的三组权限都写出来。有时候比较灵活<br>   我们先来看不同字母代表的含义：</p>
+<ul>
+<li><p>u：user 的缩写，表示所有者；</p>
+</li>
+<li><p>g：group 的缩写，表示群组用户；</p>
+</li>
+<li><p>o：other 的缩写，表示其他用户；</p>
+</li>
+<li><p>a：all 的缩写，表示所有用户。</p>
+<p> 和这些字母配合的还有几个符号：</p>
+</li>
+<li><p>+：加号，表示添加权限；</p>
+</li>
+<li><p>-：减号，表示去除权限；</p>
+</li>
+<li><p>=：等号，表示分配权限。</p>
+<p><strong>举例</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#文件 file.txt 的所有者增加读和运行的权限。</span></span><br><span class="line">chmod u+rx file.txt</span><br><span class="line"></span><br><span class="line"><span class="comment">#文件 file.txt 的群组其他用户增加读的权限。</span></span><br><span class="line">chmod g+r file.txt </span><br><span class="line"></span><br><span class="line"><span class="comment">#文件 file.txt 的其他用户移除读的权限。</span></span><br><span class="line">chmod o-r file.txt </span><br><span class="line"></span><br><span class="line"><span class="comment">#文件 file.txt 的群组其他用户增加读的权限，其他用户移除读的权限。</span></span><br><span class="line">chmod g+r o-r file.txt </span><br><span class="line"></span><br><span class="line"><span class="comment">#文件 file.txt 的群组其他用户和其他用户均移除读的权限。</span></span><br><span class="line">chmod go-r file.txt </span><br><span class="line"></span><br><span class="line"><span class="comment">#文件 file.txt 的所有用户增加运行的权限。</span></span><br><span class="line">chmod +x file.txt </span><br><span class="line"></span><br><span class="line"><span class="comment">#文件 file.txt 的所有者分配读，写和执行的权限；</span></span><br><span class="line"><span class="comment">#群组其他用户分配读的权限，不能写或执行；</span></span><br><span class="line"><span class="comment">#其他用户没有任何权限。</span></span><br><span class="line">chmod u=rwx,g=r,o=- file.txt</span><br></pre></td></tr></table></figure>
+<h2 id="后言"><a href="#后言" class="headerlink" title="后言"></a>后言</h2><p>到这里，想必大家都完全明白 chmod 里面的含义了吧～希望大家看完有所收获&lt;^^&gt;<br>ps：今天我才知道原来上课讲过，羞耻啊！所以啊，同学们，好好听课！</p>
+</li>
+</ul>
+<p>————————————————————————————————————————————————<br>参考：<a href="https://www.imooc.com/read/39/article/469" target="_blank" rel="noopener">Linux命令行与Shell脚本编程大全/15 群组的管理和文件权限管理</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/My-name-is-Linus-and-I-am-your-God/" rel="tag"># My name is Linus, and I am your God</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/01/windows%E4%B8%8E%E5%AD%90%E7%B3%BB%E7%BB%9Fubuntu%E7%9A%84%E5%AE%8C%E7%BE%8E%E5%85%B1%E7%94%9F-cmder%E7%9A%84%E5%BC%BA%E5%A4%A7%E9%AD%85%E5%8A%9B/" rel="next" title="windows与子系统ubuntu的完美共生:cmder的强大魅力">
+                <i class="fa fa-chevron-left"></i> windows与子系统ubuntu的完美共生:cmder的强大魅力
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/01/%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F%E5%8F%8A%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F/" rel="prev" title="进程间的通信方式及线程间的通信方式">
+                进程间的通信方式及线程间的通信方式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Rjszz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0X00-前言"><span class="nav-number">1.</span> <span class="nav-text">0X00 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X01-Linux用户与群组"><span class="nav-number">2.</span> <span class="nav-text">0X01 Linux用户与群组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、用户"><span class="nav-number">2.0.1.</span> <span class="nav-text">1、用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、群组"><span class="nav-number">2.0.2.</span> <span class="nav-text">2、群组</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X01-Linux文件权限"><span class="nav-number">3.</span> <span class="nav-text">0X01 Linux文件权限</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、权限描述"><span class="nav-number">3.0.1.</span> <span class="nav-text">1、权限描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、文件权限"><span class="nav-number">3.0.2.</span> <span class="nav-text">2、文件权限</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X10-chmod-命令：修改文件的访问权限"><span class="nav-number">4.</span> <span class="nav-text">0X10 chmod 命令：修改文件的访问权限</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、用数字来分配权限：chmod-的绝对用法"><span class="nav-number">4.0.1.</span> <span class="nav-text">1、用数字来分配权限：chmod 的绝对用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、用字母来分配权限：chmod-的相对用法"><span class="nav-number">4.0.2.</span> <span class="nav-text">2、用字母来分配权限：chmod 的相对用法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后言"><span class="nav-number">5.</span> <span class="nav-text">后言</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rjszz</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

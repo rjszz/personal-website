@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java是世界上最好的语言!," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Java的集合框架简单介绍java中有一个由设计优良的接口和类组成的Java集合框架，以方便程序员操作成批的数据或对象元素，本文会讲解其中常用的一些接口的方法以及其应用 集合框架结构这里只显示了Collection接口的一部分接口和Map接口下常用的HashMap接口，而这两个接口下还是有许多其他的接口的，本文没有介绍，读者有兴趣可以再去了解。 —————————————————————–正文开始">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java的集合框架简单学习笔记——Collection，ArrayList，LinkedList，HashSet，TreeSet，HashMap">
+<meta property="og:url" content="http://yoursite.com/2020/03/01/Java%E7%9A%84%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94Collection%EF%BC%8CArrayList%EF%BC%8CLinkedList%EF%BC%8CHashSet%EF%BC%8CTreeSet%EF%BC%8CHashMap/index.html">
+<meta property="og:site_name" content="Rjszz Blog">
+<meta property="og:description" content="Java的集合框架简单介绍java中有一个由设计优良的接口和类组成的Java集合框架，以方便程序员操作成批的数据或对象元素，本文会讲解其中常用的一些接口的方法以及其应用 集合框架结构这里只显示了Collection接口的一部分接口和Map接口下常用的HashMap接口，而这两个接口下还是有许多其他的接口的，本文没有介绍，读者有兴趣可以再去了解。 —————————————————————–正文开始">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191118100804405.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191118101424233.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191118102633249.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191118103038444.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191118103912473.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191118104433149.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191118104728576.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019111810541468.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191118105614204.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019111810580173.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191118110108770.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191118110314795.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2020-03-01T15:43:46.000Z">
+<meta property="article:modified_time" content="2020-03-01T16:01:30.384Z">
+<meta property="article:author" content="Rjszz">
+<meta property="article:tag" content="Java是世界上最好的语言!">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20191118100804405.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/01/Java的集合框架简单学习笔记——Collection，ArrayList，LinkedList，HashSet，TreeSet，HashMap/"/>
+
+
+
+
+
+  <title>Java的集合框架简单学习笔记——Collection，ArrayList，LinkedList，HashSet，TreeSet，HashMap | Rjszz Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rjszz Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Nothing is all</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/01/Java%E7%9A%84%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94Collection%EF%BC%8CArrayList%EF%BC%8CLinkedList%EF%BC%8CHashSet%EF%BC%8CTreeSet%EF%BC%8CHashMap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rjszz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rjszz Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java的集合框架简单学习笔记——Collection，ArrayList，LinkedList，HashSet，TreeSet，HashMap</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-01T23:43:46+08:00">
+                2020-03-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Java的集合框架简单介绍"><a href="#Java的集合框架简单介绍" class="headerlink" title="Java的集合框架简单介绍"></a>Java的集合框架简单介绍</h2><p><em>java中有一个由设计优良的接口和类组成的Java集合框架，以方便程序员操作成批的数据或对象元素，本文会讲解其中常用的一些接口的方法以及其应用</em></p>
+<p><strong>集合框架结构</strong><br><img src="https://img-blog.csdnimg.cn/20191118100804405.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这里只显示了Collection接口的一部分接口和Map接口下常用的HashMap接口，而这两个接口下还是有许多其他的接口的，本文没有介绍，读者有兴趣可以再去了解。</p>
+<p>—————————————————————–正文开始———————————————————</p>
+<p><strong>1.Collection接口</strong><br>Collection接口是Set接口和List接口的父接口，是最基本的接口，定义了对集合进行基本操作的一些通用方法，Collection接口提供的主要方法如下：<br><img src="https://img-blog.csdnimg.cn/20191118101424233.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>之后的接口可以调用这些方法</p>
+<p> CollectionTest.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Collection;</span><br><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CollectionTest</span></span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">   Collection c =<span class="keyword">new</span> ArrayList();  <span class="comment">//创建集合c</span></span><br><span class="line">            </span><br><span class="line">            c.add(<span class="string">"Apple"</span>);</span><br><span class="line">            c.add(<span class="string">"Banana"</span>);</span><br><span class="line">            c.add(<span class="string">"pear"</span>);</span><br><span class="line">            c.add(<span class="string">"Orange"</span>);</span><br><span class="line">            ArrayList arry =<span class="keyword">new</span> ArrayList();  <span class="comment">//创建集合arry</span></span><br><span class="line">            </span><br><span class="line">            arry.add(<span class="string">"Cat"</span>);</span><br><span class="line">            arry.add(<span class="string">"Dog"</span>);</span><br><span class="line">            System.out.println(<span class="string">"集合c中元素个数为:"</span>+c.size());</span><br><span class="line">            <span class="keyword">if</span>(!arry.isEmpty())&#123;   <span class="comment">//array不为空</span></span><br><span class="line">                c.addAll(arry);   <span class="comment">//将集合array中的元素添加到集合c中</span></span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(<span class="string">"集合c中的元素个数:"</span>+c.size());</span><br><span class="line"></span><br><span class="line">           Iterator iterator=c.iterator();   <span class="comment">//返回迭代器对象</span></span><br><span class="line">            System.out.println(<span class="string">"集合c中的元素:"</span>);</span><br><span class="line">            <span class="keyword">while</span>(iterator.hasNext())&#123;</span><br><span class="line">             System.out.print(iterator.next()+<span class="string">" "</span>);   </span><br><span class="line">            &#125;</span><br><span class="line">              System.out.println();</span><br><span class="line">            <span class="keyword">if</span>(c.contains(<span class="string">"Cat"</span>))&#123;</span><br><span class="line">                    System.out.println(<span class="string">"----集合c中包含元素Cat-----"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            c.removeAll(arry);   <span class="comment">//从集合c中删除集合arry中所有的元素</span></span><br><span class="line">            iterator=c.iterator();</span><br><span class="line">            System.out.println(<span class="string">"集合c中的元素:"</span>);</span><br><span class="line">            <span class="keyword">while</span> (iterator.hasNext())&#123;</span><br><span class="line">            System.out.println(iterator.next()+<span class="string">" "</span>);</span><br><span class="line">           &#125;</span><br><span class="line">            System.out.println();</span><br><span class="line">          <span class="comment">//将集合中的元素存放到字符数组中</span></span><br><span class="line">            Object[]  str=c.toArray();</span><br><span class="line">            String s=<span class="string">""</span>;</span><br><span class="line">            System.out.println(<span class="string">"数组中的元素为:"</span>);</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;str.length;i++)&#123;</span><br><span class="line">                    s=(String) str[i];    <span class="comment">//将对象强制转化为字符串</span></span><br><span class="line">                    System.out.print(s+<span class="string">" "</span>);  <span class="comment">//输出数组元素</span></span><br><span class="line">            &#125; </span><br><span class="line">            System.out.println();</span><br><span class="line">&#125;	               </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里用到了待会要讲到的ArrayList类，主要是为了突出Collection接口与子接口的关系以及操作<br>1.Collection接口能够将整个子接口的元素作为一个整体来进行添加与删除<br>2.通过迭代器对象（Iterator）来将集合中的元素输出</p>
+<p>结果：<br><img src="https://img-blog.csdnimg.cn/20191118102633249.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><strong>2.List 接口</strong><br>List接口是Collection的子接口，实现List接口的容器类中的元素是有顺序的，并且元素可以重复。List容器中的元素对应一个整数型的序号，记录其在List容器中的位置，可以根据序号存取容器中的元素。除了继承Collection接口的方法外，又提供了一些方法<br><img src="https://img-blog.csdnimg.cn/20191118103038444.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>本文介绍实现List接口的容器类ArrayList、LinkedList</p>
+<ul>
+<li><p><strong>a.ArrayList类</strong></p>
+<p>ArrayList类实现一个可变大小的数组，可以像链表一样被访问。它以数组的方式实现，允许快速随机存取。它允许包含所有元素，包括null元素。每个ArrayList类实例都有一个容量（capacity），即存储元素的数组大小，这个容量可以随着不断添加新元素而自动增加</p>
+<p>ArrayList类常用的构造方法有3种重载形式：</p>
+</li>
+</ul>
+<blockquote>
+<p>构造一个初始容量为10的空列表：<br>public ArrayList()</p>
+</blockquote>
+<blockquote>
+<p>构造一个指定初始容量的空列表：<br> public ArrayList(int initialCapacity)</p>
+</blockquote>
+<blockquote>
+<p>构造一个包含指定集合元素的列表，这些元素是按照该集合的迭代器返回它们的顺序排列：<br>public ArrayList(Collection c)</p>
+</blockquote>
+<p>ArrayListTest.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayListTest</span></span>&#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line">                ArrayList list=<span class="keyword">new</span> ArrayList();</span><br><span class="line">                list.add(<span class="string">"cat"</span>);</span><br><span class="line">                list.add(<span class="string">"dog"</span>);</span><br><span class="line">                list.add(<span class="string">"pig"</span>);</span><br><span class="line">                list.add(<span class="string">"sheep"</span>);</span><br><span class="line">                list.add(<span class="string">"pig"</span>);</span><br><span class="line"></span><br><span class="line">                System.out.println(<span class="string">"------输出集合中的元素-----"</span>);</span><br><span class="line">                Iterator iterator=list.iterator();</span><br><span class="line">                <span class="keyword">while</span>(iterator.hasNext())&#123;</span><br><span class="line">                    System.out.print(iterator.next()+<span class="string">"  "</span>);                </span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println();</span><br><span class="line">                <span class="comment">//替换指定索引处的元素</span></span><br><span class="line">                System.out.println(<span class="string">"返回替换集合中索引是1的元素: "</span>+list.set(<span class="number">1</span>,<span class="string">"mouse"</span>));</span><br><span class="line">                iterator = list.iterator();</span><br><span class="line">                 System.out.println(<span class="string">"----元素替换后集合中的元素------"</span>);</span><br><span class="line">                <span class="keyword">while</span>(iterator.hasNext())&#123;</span><br><span class="line">                    System.out.print(iterator.next()+<span class="string">"  "</span>);                </span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println();</span><br><span class="line">                <span class="comment">//获取指定索引处的集合元素</span></span><br><span class="line">                System.out.println(<span class="string">"获取集合中索引是2的元素："</span>+list.get(<span class="number">2</span>));</span><br><span class="line">                System.out.println(<span class="string">"集合中第一次出现pig的索引"</span>+list.indexOf(<span class="string">"pig"</span>));</span><br><span class="line">                System.out.println(<span class="string">"集合中最后一次出现dog的索引"</span>+list.lastIndexOf(<span class="string">"dog"</span>));</span><br><span class="line">                List l =list.subList(<span class="number">1</span>,<span class="number">4</span>);  <span class="comment">//返回集合中 [1,4)的集合</span></span><br><span class="line">                iterator = l.iterator();</span><br><span class="line">                System.out.println(<span class="string">"-------新集合中的元素------"</span>);</span><br><span class="line">                <span class="keyword">while</span>(iterator.hasNext())&#123;</span><br><span class="line">                    System.out.print(iterator.next()+<span class="string">"  "</span>);                </span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println();</span><br><span class="line">            &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果：<br><img src="https://img-blog.csdnimg.cn/20191118103912473.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<ul>
+<li><strong>b. LinkedList 类</strong></li>
+</ul>
+<p>LinkedList实现了List接口，允许null元素。LinkedList类实现一个链表可以对集合的首部和尾部进行插入和删除操作，这些操作可以使LinkedList类被用作堆栈（stack）、队列（queue）或双向队列（deque）。相对于ArrayList，LinkedList在插入或删除元素时提供了好的性能，但是随机访问元素的速度则相对较慢。LinkedList类除了承List接口的方法，又提供了一些方法<br><img src="https://img-blog.csdnimg.cn/20191118104433149.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>LinkedListTest.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">import</span> java.util.LinkedList;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LinkedListTest</span></span>&#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span></span>&#123;</span><br><span class="line">      LinkedList list = <span class="keyword">new</span> LinkedList();</span><br><span class="line">      list.add(<span class="string">"cat"</span>);</span><br><span class="line">      list.add(<span class="string">"dog"</span>);</span><br><span class="line">      list.add(<span class="string">"pig"</span>);</span><br><span class="line">      list.add(<span class="string">"sheep"</span>);</span><br><span class="line">      list.add(<span class="string">"mouse"</span>);</span><br><span class="line">      list.add(<span class="string">"duck"</span>);</span><br><span class="line">      System.out.println(<span class="string">"-------输出集合中的元素---------"</span>);</span><br><span class="line">      Iterator iterator=list.iterator();</span><br><span class="line">      <span class="keyword">while</span>(iterator.hasNext())&#123;</span><br><span class="line">            System.out.print(iterator.next()+<span class="string">" "</span>);</span><br><span class="line">       &#125;</span><br><span class="line">       System.out.println();</span><br><span class="line">        System.out.println(<span class="string">"获取集合中的第一个元素:"</span>+list.getFirst());</span><br><span class="line">        System.out.println(<span class="string">"获取集合中的最后一个元素:"</span>+list.getLast());</span><br><span class="line">        System.out.println(<span class="string">"删除集合中的第一个元素"</span>+list.removeFirst());</span><br><span class="line">        System.out.println(<span class="string">"删除集合中的最后一个元素"</span>+list.removeLast());</span><br><span class="line">        System.out.println(<span class="string">"------------删除元素后的集合---------"</span>);</span><br><span class="line">        iterator = list.iterator();</span><br><span class="line">        <span class="keyword">while</span>(iterator.hasNext())&#123;</span><br><span class="line">        System.out.print(iterator.next()+<span class="string">" "</span>);    </span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：<br><img src="https://img-blog.csdnimg.cn/20191118104728576.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><strong>3.Set接口</strong><br>Set接口的容器类中的元素是没有顺序的，并且元素不可以重复,Set接口没有新增方法</p>
+<ul>
+<li><strong>a.HashSet类</strong></li>
+</ul>
+<p>HashSet类实现了Set接口，不允许出现重复元素，不保证集合中元素的顺序，允许包含值为null的元素，但最多只能有一个。HashSet添加一个元素时，会调用元素的hashCode()方法，获得其哈希码，根据这个哈希码计算该元素在集合中的存储位置。HashSet使用哈希算法存储集合中的元素，可以提高集合元素的存储速度</p>
+<p>HashSet类的常用构造方法有3种重载形式</p>
+<blockquote>
+<p>构造一个新的空Set集合：<br>public HashSet()</p>
+</blockquote>
+<blockquote>
+<p>构造一个包含指定集合中的元素的新Set集合：<br> public HashSet(Collection c)</p>
+</blockquote>
+<blockquote>
+<p>构造一个新的空Set集合，指定初始容量：<br> public HashSet(int initialCapacity)</p>
+</blockquote>
+<p>HashSetTest.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.HashSet;</span><br><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HashSetTest</span></span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span></span>&#123;</span><br><span class="line">            HashSet hash = <span class="keyword">new</span> HashSet();</span><br><span class="line">            hash.add(<span class="string">"56"</span>);</span><br><span class="line">            hash.add(<span class="string">"32"</span>);</span><br><span class="line">            hash.add(<span class="string">"50"</span>);</span><br><span class="line">            hash.add(<span class="string">"48"</span>);</span><br><span class="line">            hash.add(<span class="string">"48"</span>);</span><br><span class="line">            hash.add(<span class="string">"23"</span>);</span><br><span class="line">            System.out.println(<span class="string">"集合元素个数:"</span>+hash.size());</span><br><span class="line">            Iterator iter = hash.iterator();</span><br><span class="line">            <span class="keyword">while</span>(iter.hasNext())&#123;</span><br><span class="line">              System.out.print(iter.next()+<span class="string">" "</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：<br><img src="https://img-blog.csdnimg.cn/2019111810541468.png" alt="在这里插入图片描述"></p>
+<p>  <strong>b.TreeSet类</strong><br>TreeSet类不仅继承了Set接口，还继承了SortedSet接口，它不允许出现重复元素。由于SortedSet接口可以对集合中的元素进行自然排序（即升序排序），因此TreeSet类会对实现了Comparable接口的类的对象自动排序<br>TreeSet类提供的方法如表：<br><img src="https://img-blog.csdnimg.cn/20191118105614204.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>TreeSetTest.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">import</span> java.util.SortedSet;</span><br><span class="line"><span class="keyword">import</span> java.util.TreeSet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeSetTest</span></span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span></span>&#123;</span><br><span class="line">        TreeSet tree=<span class="keyword">new</span> TreeSet();</span><br><span class="line">        tree.add(<span class="string">"45"</span>);</span><br><span class="line">        tree.add(<span class="string">"32"</span>);</span><br><span class="line">        tree.add(<span class="string">"68"</span>);</span><br><span class="line">        tree.add(<span class="string">"12"</span>);</span><br><span class="line">        tree.add(<span class="string">"20"</span>);</span><br><span class="line">        tree.add(<span class="string">"80"</span>);</span><br><span class="line">        tree.add(<span class="string">"75"</span>);</span><br><span class="line">        System.out.println(<span class="string">"集合元素个数:"</span>+tree.size());</span><br><span class="line">        System.out.println(<span class="string">"------集合中的元素-----"</span>);</span><br><span class="line">        Iterator iter=tree.iterator();</span><br><span class="line">        <span class="keyword">while</span>(iter.hasNext())&#123;</span><br><span class="line">        System.out.print(iter.next()+<span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">        System.out.println(<span class="string">"----集合中20~68的元素----"</span>);</span><br><span class="line">        SortedSet s = tree.subSet(<span class="string">"20"</span>,<span class="string">"68"</span>);</span><br><span class="line">        iter = s.iterator();</span><br><span class="line">        <span class="keyword">while</span>(iter.hasNext())&#123;</span><br><span class="line">            System.out.print(iter.next()+<span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">        System.out.println(<span class="string">"--------集合中45之前的元素------"</span>);</span><br><span class="line">        SortedSet s1 = tree.headSet(<span class="string">"45"</span>);</span><br><span class="line">         iter = s1.iterator();</span><br><span class="line">         <span class="keyword">while</span>(iter.hasNext())&#123;</span><br><span class="line">            System.out.print(iter.next() + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">         System.out.println(<span class="string">"--------集合中45之后的元素------"</span>);</span><br><span class="line">         SortedSet s2 = tree.tailSet(<span class="string">"45"</span>);</span><br><span class="line">          iter = s2.iterator();</span><br><span class="line">          <span class="keyword">while</span>(iter.hasNext())&#123;</span><br><span class="line">                System.out.print(iter.next()+<span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">        System.out.println(<span class="string">"集合中的第一个元素:"</span>+tree.first());</span><br><span class="line">        System.out.println(<span class="string">"集合中的第一个元素:"</span>+tree.last());</span><br><span class="line">        System.out.println(<span class="string">"获取并移出集合中第一个元素:"</span>+tree.pollFirst());</span><br><span class="line">        System.out.println(<span class="string">"获取并移出集合中最后一个元素:"</span>+tree.pollLast());</span><br><span class="line">        System.out.println(<span class="string">"------集合中的元素------"</span>);</span><br><span class="line">        iter = tree.iterator();</span><br><span class="line">        <span class="keyword">while</span>(iter.hasNext())&#123;</span><br><span class="line">                System.out.print(iter.next()+<span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果：<br><img src="https://img-blog.csdnimg.cn/2019111810580173.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><strong>4.Map接口</strong></p>
+<p>Map接口是用来存储“键-值”对的集合，存储的“键-值”对是通过键来标识的，所以键不可以重复</p>
+<ul>
+<li><strong>a.HashMap类</strong><br>HashMap是基于哈希表的Map接口的实现类，以“键-值”对映射的形式存在。它在HashMap中总是被当作一个整体，系统会根据哈希算法来计算“键-值”对的存储位置，具有很快的访问速度，最多允许一条记录的键为null，不支持线程同步。可以通过键快速地存取值。TreeMap类继承了AbstractMap，可以对键对象进行排序。<br>Map接口提供的方法如表：<img src="https://img-blog.csdnimg.cn/20191118110108770.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>HashMapTest.java</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HashMapTest</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">     HashMap map = <span class="keyword">new</span> HashMap();</span><br><span class="line">    map.put(<span class="string">"101"</span>,<span class="string">"一代天骄"</span>);</span><br><span class="line">    map.put(<span class="string">"102"</span>,<span class="string">"成吉思汗"</span>);</span><br><span class="line">    map.put(<span class="string">"103"</span>,<span class="string">"只识弯弓射大雕"</span>);</span><br><span class="line">    map.put(<span class="string">"104"</span>,<span class="string">"俱往矣"</span>);</span><br><span class="line">    map.put(<span class="string">"105"</span>,<span class="string">"数风流人物"</span>);</span><br><span class="line">    map.put(<span class="string">"106"</span>,<span class="string">"还看今朝"</span>);</span><br><span class="line">   System.out.println(<span class="string">"键值为102的值为:"</span>+map.get(<span class="string">"102"</span>));</span><br><span class="line">    Set s = map.keySet();</span><br><span class="line">    Iterator iterator =s.iterator();</span><br><span class="line">    String key=<span class="string">""</span>;</span><br><span class="line">    <span class="keyword">while</span>(iterator.hasNext())&#123;</span><br><span class="line">     key=(String)iterator.next();</span><br><span class="line">    System.out.println(key+<span class="string">":"</span>+map.get(key));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：<br><img src="https://img-blog.csdnimg.cn/20191118110314795.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>————————————————————–正文结束————————————————————<br>参考书籍：《Java 从入门到项目实践 》</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java%E6%98%AF%E4%B8%96%E7%95%8C%E4%B8%8A%E6%9C%80%E5%A5%BD%E7%9A%84%E8%AF%AD%E8%A8%80/" rel="tag"># Java是世界上最好的语言!</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/01/%E7%B1%BB%E7%9A%84%E8%87%AA%E5%8A%A8%E8%BD%AC%E6%8D%A2%E5%92%8C%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%A3%85%E6%8D%A2/" rel="next" title="C++类的自动转换和强制类型装换">
+                <i class="fa fa-chevron-left"></i> C++类的自动转换和强制类型装换
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/01/windows%E4%B8%8E%E5%AD%90%E7%B3%BB%E7%BB%9Fubuntu%E7%9A%84%E5%AE%8C%E7%BE%8E%E5%85%B1%E7%94%9F-cmder%E7%9A%84%E5%BC%BA%E5%A4%A7%E9%AD%85%E5%8A%9B/" rel="prev" title="windows与子系统ubuntu的完美共生:cmder的强大魅力">
+                windows与子系统ubuntu的完美共生:cmder的强大魅力 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Rjszz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java的集合框架简单介绍"><span class="nav-number">1.</span> <span class="nav-text">Java的集合框架简单介绍</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rjszz</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

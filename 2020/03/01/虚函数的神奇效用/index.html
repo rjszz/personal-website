@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="世无C++,万古长如夜," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="C++ 虚函数的神奇效用0X00 前言   可能大多数人开始学C++和我一样，对于虚函数(virtual)这个词，有点似懂非懂、云里雾里的感觉。    今天我们就把这个虚函数好好唠清楚 0X10 何为虚函数?   其实虚函数没有那么大假大空的定义，就一句话：   在类定义的函数中，如果用限定词 vitual 修饰的就是虚函数     怎么样，是不是简单利索不墨迹    不过还是来一点更实在的，直接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++虚函数的神奇效用">
+<meta property="og:url" content="http://yoursite.com/2020/03/01/%E8%99%9A%E5%87%BD%E6%95%B0%E7%9A%84%E7%A5%9E%E5%A5%87%E6%95%88%E7%94%A8/index.html">
+<meta property="og:site_name" content="Rjszz Blog">
+<meta property="og:description" content="C++ 虚函数的神奇效用0X00 前言   可能大多数人开始学C++和我一样，对于虚函数(virtual)这个词，有点似懂非懂、云里雾里的感觉。    今天我们就把这个虚函数好好唠清楚 0X10 何为虚函数?   其实虚函数没有那么大假大空的定义，就一句话：   在类定义的函数中，如果用限定词 vitual 修饰的就是虚函数     怎么样，是不是简单利索不墨迹    不过还是来一点更实在的，直接">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200229210101228.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200229220309709.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200229221202970.png">
+<meta property="article:published_time" content="2020-03-01T15:38:28.000Z">
+<meta property="article:modified_time" content="2020-03-01T16:01:53.888Z">
+<meta property="article:author" content="Rjszz">
+<meta property="article:tag" content="世无C++,万古长如夜">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200229210101228.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/01/虚函数的神奇效用/"/>
+
+
+
+
+
+  <title>C++虚函数的神奇效用 | Rjszz Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rjszz Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Nothing is all</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/01/%E8%99%9A%E5%87%BD%E6%95%B0%E7%9A%84%E7%A5%9E%E5%A5%87%E6%95%88%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rjszz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rjszz Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C++虚函数的神奇效用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-01T23:38:28+08:00">
+                2020-03-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="C-虚函数的神奇效用"><a href="#C-虚函数的神奇效用" class="headerlink" title="C++ 虚函数的神奇效用"></a>C++ 虚函数的神奇效用</h1><h3 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a>0X00 前言</h3><p>   可能大多数人开始学C++和我一样，对于虚函数(virtual)这个词，有点似懂非懂、云里雾里的感觉。</p>
+<p>   今天我们就把这个虚函数好好唠清楚</p>
+<h3 id="0X10-何为虚函数"><a href="#0X10-何为虚函数" class="headerlink" title="0X10 何为虚函数?"></a>0X10 何为虚函数?</h3><p>   其实虚函数没有那么大假大空的定义，就一句话：</p>
+<blockquote>
+<p> 在类定义的函数中，如果用限定词 <code>vitual</code> 修饰的就是虚函数</p>
+</blockquote>
+<p>   怎么样，是不是简单利索不墨迹</p>
+<p>   不过还是来一点更实在的，直接上代码</p>
+<p>   我们先定义一个类，类名是Animal，将其作为基类</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">	Animal()&#123;<span class="built_in">cout</span>&lt;&lt;<span class="string">"I'm an animal!"</span>&lt;&lt;<span class="built_in">endl</span>;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">sleep</span><span class="params">()</span></span>&#123;<span class="built_in">cout</span>&lt;&lt;<span class="string">"I'm sleep"</span>&lt;&lt;<span class="built_in">endl</span>;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="title">eat</span><span class="params">()</span></span>&#123;<span class="built_in">cout</span>&lt;&lt;<span class="string">"I'm eating"</span>&lt;&lt;<span class="built_in">endl</span>;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">virtual</span> ~Animal()&#123;<span class="built_in">cout</span>&lt;&lt;<span class="string">"Remember me,I'm an animal! Bye!"</span>&lt;&lt;<span class="built_in">endl</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>   从上面的类方法可以看到,定义了构造函数，一个普通的成员函数 sleep()，一个虚函数 eat()，并且一个析构函数，至于为什么析构函数也是虚函数，这个要等到后面才能揭晓。</p>
+<p>   现在大家只需要好好的看看我们这个虚函数，记住它的模样</p>
+<h3 id="0X20-虚函数何用"><a href="#0X20-虚函数何用" class="headerlink" title="0X20 虚函数何用?"></a>0X20 虚函数何用?</h3><p>   上面认识了虚函数了，那有人要问了：要这玩样有啥用呢？</p>
+<p>   别急，要想说清这个，我们还需要做一件事。</p>
+<p>   既然有基类那么是不是就应该有派生类？没错滴</p>
+<p>   下面我们还需要新建一个派生类Dog，它继承了我们前面的Animal类</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>:</span><span class="keyword">public</span> Animal</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">public</span>:</span><br><span class="line">      Dog()&#123;<span class="built_in">cout</span>&lt;&lt;<span class="string">"I'm a dog"</span>&lt;&lt;<span class="built_in">endl</span>;&#125;</span><br><span class="line">      </span><br><span class="line">      <span class="function"><span class="keyword">void</span> <span class="title">sleep</span><span class="params">()</span></span>&#123;<span class="built_in">cout</span>&lt;&lt;<span class="string">"I'm a dog and I'm sleep"</span>&lt;&lt;<span class="built_in">endl</span>;&#125;</span><br><span class="line">      <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>&#123;<span class="built_in">cout</span>&lt;&lt;<span class="string">"I'm eating bones"</span>&lt;&lt;<span class="built_in">endl</span>;&#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">virtual</span> ~Dog()&#123;<span class="built_in">cout</span>&lt;&lt;<span class="string">"Remember me,I'm a dog! Bye!"</span>&lt;&lt;<span class="built_in">endl</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>   好了，继承完毕，可以看到有一个Dog构造函数，并且重写了Animal的函数sleep()和eat()，以及后面的析构函数</p>
+<p>   Dog类写好了，我们就需讲 <code>虚函数</code> 的作用到底是干嘛的了</p>
+<p>   首先，我们知道(默认知道233)基类的指针指向派生类，基类的引用可以对派生类的对象进行引用</p>
+<p>   因此我可以有如下代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Animal animal;</span><br><span class="line">Dog dog;</span><br><span class="line">Animal * fa1=&amp;base;</span><br><span class="line">Animal * fa2=&amp;dog;</span><br></pre></td></tr></table></figure>
+<p>   上述代码定义了一个Animal类对象animal,定义了一个Dog类对象dog。<br>   并且定义了两个基类的指针 fa1,fa2分别指向了animal和dog</p>
+<p>   现在我们分别通过指针来调用对象的方法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"animal:"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">fa1-&gt;sleep();</span><br><span class="line">fal-&gt;eat();</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;<span class="string">"dog:"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">fa2-&gt;sleep();</span><br><span class="line">fa2-&gt;eat();</span><br></pre></td></tr></table></figure>
+<p>   通过两个指针来调用两个对象的方法，那么结果到底如何呢？<br><img src="https://img-blog.csdnimg.cn/20200229210101228.png" alt="在这里插入图片描述"><br>   是不是有点奇怪呢？</p>
+<p>   明明两个函数都进行了重写，为什么fa2调用的是<code>Animal::sleep()</code>而不是<code>Dog::sleep()</code></p>
+<p>   原因很简单：一个是虚函数而另一个不是！</p>
+<p>   没错了，这就是虚函数的功用：</p>
+<blockquote>
+<p>当指向派生类的指针(或引用)调用类函数时，对于虚函数，会调用派生类的虚函数，而一般的成员函数只会调用基类的函数</p>
+</blockquote>
+<p>   可能乍听起来有点绕，但是通过以上的例子，想必大家应该是清楚了。</p>
+<h3 id="0X30-虚函数究竟何用"><a href="#0X30-虚函数究竟何用" class="headerlink" title="0X30 虚函数究竟何用?"></a>0X30 虚函数究竟何用?</h3><p>   但是看了上面解释，有些同学又该问了，听是听懂了，但这感觉并没有啥用啊。似乎有点鸡肋。</p>
+<p>   这样想你就错了</p>
+<p><strong>1、为了多态</strong><br>   其实在C++中，很多东西都是为了多态而设计的。</p>
+<p>   那么这个虚函数究竟是为了哪门子多态呢？</p>
+<p>   好，我们加入设计一个函数，在这个函数里面需要调用”动物”的动作。当然这里的动物包括我们的 Animal 也包括Dog。也就是说我们需要传递一个类的引用到函数中去</p>
+<p>   现在假设，我们从来都没有虚函数这个东西（或者说我们现在要调用 sleep 这个函数）<br>   那我们的函数应该怎么设计了？<br>   我想应该是这样的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">action</span><span class="params">(Animal &amp;animal)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="comment">//.....</span></span><br><span class="line"> animal.sleep();</span><br><span class="line"> <span class="comment">//....</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">action</span><span class="params">(Dog &amp;dog)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="comment">//.....</span></span><br><span class="line"> dog.sleep();</span><br><span class="line"> <span class="comment">//....</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>   我们假设省略的东西是一样的，那得多麻烦啊是不？</p>
+<p>   就一句话不一样就需要写一个函数，又浪费空间又浪费时间。</p>
+<p>   那要是我们现在有虚函数了呢？(也就是调用eat函数)</p>
+<p>   <strong>这个时候只需要一个函数就可以了</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">action</span><span class="params">(Animal &amp;fa)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="comment">//.....</span></span><br><span class="line"> fa.sleep();</span><br><span class="line"> <span class="comment">//....</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>   为什么呢？<br>   既然基类引用既可以对基类进行引用也可以对派生类引用，那么传递进来的不管是基类对象还是派生类对象，都是可以的。<br>   并且刚才都说了，对于虚函数，如果是基类的引用就是调用基类方法，如果是派生类引用就调用派生类方法<br>   那一个函数就可以啦，这比没有虚函数时好多了，这是啥——多态啊！</p>
+<p><strong>2、为了避免内存泄露</strong><br>   等等，咋扯扯扯，扯到内存泄露来了？</p>
+<p>   如果你有疑惑了，那就对了，这正是最容易出错的地方！</p>
+<p>   我们再回到前面，是不是有一个坑没填上？没错，为什么析构函数也用了 <code>virtual</code> 来修饰？</p>
+<p>   我们知道(再次强行知道 (狗头))，析构函数一般是用来释放之前申请的堆空间的。虽然我这里没有，但是一般来讲析构函数就是用来做这个事的。我现在用cout来区分两个类而已</p>
+<p>   我们现在执行以下函数，但这次我们将不用<code>virtual</code> 来修饰析构函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Animal* fa=<span class="keyword">new</span> Dog();</span><br><span class="line"><span class="comment">//...</span></span><br><span class="line"><span class="keyword">delete</span> fa;</span><br></pre></td></tr></table></figure>
+<p>   这次我们用Animal指针来new了一个Dog对象，然后执行一系列操作之后就将其delete掉</p>
+<p>   最后的执行结果如下：<br>   <img src="https://img-blog.csdnimg.cn/20200229220309709.png" alt="在这里插入图片描述"><br>   发现只出现了这一句话呢，也就是说只调用了 Animal 的析构函数</p>
+<p>   那这问题就严重了，我定义的是一个Dog对象，要是我在Dog中申请了一大堆的堆内存，那么岂不是没有释放了，这是什么——内存泄露啊！</p>
+<p>   怎么解决呢？——虚函数</p>
+<p>   我们将析构函数设置为虚函数再运行一遍看看<br>   <img src="https://img-blog.csdnimg.cn/20200229221202970.png" alt="在这里插入图片描述"><br>   现在舒服了，Dog的析构函数也调用了，不用怕内存泄露了</p>
+<p>   原因很简单，因为是虚函数，所以此时会调用派生类的析构函数，然后在调用基类的析构函数，而不是只调用基类的。</p>
+<h3 id="0X40-虚函数小总结"><a href="#0X40-虚函数小总结" class="headerlink" title="0X40 虚函数小总结"></a>0X40 虚函数小总结</h3><p>有以下几个要点：</p>
+<ul>
+<li>在基类方法声明中使用关键字<code>virtual</code> 可使得该方法在基类以及所有的派生类(包括从派生类派生出来的类)中是虚的(也就是说，其实我们派生类中对用的虚函数其实可以不用写virtual,因为会自动成为虚函数，但是我们还是习惯上写上用以区分 )</li>
+<li>如果使用指向对象的引用或者指针来调用虚函数，程序将使用对象类型定义的方法，而不是使用为引用或指针类型定义的方法。这称为动态联编。这种行为十分重要，因为这样基类指针或者引用可以指向派生类对象</li>
+<li>如果定义的类将被作为基类，则应该将那些要在派生类中重新定义的类方法定义为虚的</li>
+</ul>
+<p>还有几点需要注意：<br><strong>1、构造函数</strong><br>   构造函数不能是虚函数，因为构造函数的调用顺序不用于继承机制。派生类并不会继承基类的构造函数，所以将构造函数定义为虚函数没有任何意义</p>
+<p><strong>2、析构函数</strong><br>   析构函数应该是虚函数。原因刚才讨论过了，为了避免内存泄漏</p>
+<p><strong>3、友元函数</strong><br>   友元函数不能是虚函数，因为友元函数不是类成员，只有类成员才能是虚函数</p>
+<p><strong>4、没有重新定义</strong><br>   如果派生类没有重新定义函数，将使用该函数的基类版本</p>
+<h3 id="0X50-后言"><a href="#0X50-后言" class="headerlink" title="0X50 后言"></a>0X50 后言</h3><p>   关于虚函数的内容就到这里啦，只要大家能够理解它的作用以及设计者的初心，应该就能容易记住并且运用起来得心运手了。</p>
+<p>   最后祝大家天天向上，好好学习～</p>
+<p>   下次见！</p>
+<p>——————————————————————————————————————————————————————<br>参考：《C++ primer plus 第6版》</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E4%B8%96%E6%97%A0C-%E4%B8%87%E5%8F%A4%E9%95%BF%E5%A6%82%E5%A4%9C/" rel="tag"># 世无C++,万古长如夜</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/01/%E7%B1%BB%E7%9A%84%E8%87%AA%E5%8A%A8%E8%BD%AC%E6%8D%A2%E5%92%8C%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%A3%85%E6%8D%A2/" rel="prev" title="C++类的自动转换和强制类型装换">
+                C++类的自动转换和强制类型装换 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Rjszz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-虚函数的神奇效用"><span class="nav-number">1.</span> <span class="nav-text">C++ 虚函数的神奇效用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0X00-前言"><span class="nav-number">1.0.1.</span> <span class="nav-text">0X00 前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0X10-何为虚函数"><span class="nav-number">1.0.2.</span> <span class="nav-text">0X10 何为虚函数?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0X20-虚函数何用"><span class="nav-number">1.0.3.</span> <span class="nav-text">0X20 虚函数何用?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0X30-虚函数究竟何用"><span class="nav-number">1.0.4.</span> <span class="nav-text">0X30 虚函数究竟何用?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0X40-虚函数小总结"><span class="nav-number">1.0.5.</span> <span class="nav-text">0X40 虚函数小总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0X50-后言"><span class="nav-number">1.0.6.</span> <span class="nav-text">0X50 后言</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rjszz</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
