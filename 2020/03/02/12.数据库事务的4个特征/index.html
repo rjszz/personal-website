@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="万物皆可存," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="数据库事务的4个特征数据库之事务事务是由一系列对系统中数据进行访问与更新的操作所组成的一个程序执行逻辑单元。事务是DBMS(数据库管理系统)中最基础的单元，事务不可分割。 事务的4个基本特征原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）、持久性（Duration），简称ACID 1）原子性（Atomicity）原子性是指事务包含的所有操作要么全部成功，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库事务的4个特征">
+<meta property="og:url" content="http://yoursite.com/2020/03/02/12.%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1%E7%9A%844%E4%B8%AA%E7%89%B9%E5%BE%81/index.html">
+<meta property="og:site_name" content="Rjszz Blog">
+<meta property="og:description" content="数据库事务的4个特征数据库之事务事务是由一系列对系统中数据进行访问与更新的操作所组成的一个程序执行逻辑单元。事务是DBMS(数据库管理系统)中最基础的单元，事务不可分割。 事务的4个基本特征原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）、持久性（Duration），简称ACID 1）原子性（Atomicity）原子性是指事务包含的所有操作要么全部成功，">
+<meta property="article:published_time" content="2020-03-02T13:13:42.000Z">
+<meta property="article:modified_time" content="2020-03-02T13:14:58.687Z">
+<meta property="article:author" content="Rjszz">
+<meta property="article:tag" content="万物皆可存">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/02/12.数据库事务的4个特征/"/>
+
+
+
+
+
+  <title>数据库事务的4个特征 | Rjszz Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+      <div class="site-meta-headline">
+        <a>
+          <img class="custom-logo-image" src="/images/avatar.ico"
+               alt="Rjszz Blog"/>
+        </a>
+      </div>
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rjszz Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Nothing is all</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/02/12.%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1%E7%9A%844%E4%B8%AA%E7%89%B9%E5%BE%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rjszz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.ico">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rjszz Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据库事务的4个特征</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-02T21:13:42+08:00">
+                2020-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/sql/" itemprop="url" rel="index">
+                    <span itemprop="name">sql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="数据库事务的4个特征"><a href="#数据库事务的4个特征" class="headerlink" title="数据库事务的4个特征"></a>数据库事务的4个特征</h1><h2 id="数据库之事务"><a href="#数据库之事务" class="headerlink" title="数据库之事务"></a>数据库之事务</h2><p>事务是由一系列对系统中数据进行<strong>访问与更新</strong>的操作所组成的一个程序执行逻辑单元。<br>事务是DBMS(数据库管理系统)中最基础的单元，事务不可分割。</p>
+<h2 id="事务的4个基本特征"><a href="#事务的4个基本特征" class="headerlink" title="事务的4个基本特征"></a>事务的4个基本特征</h2><p>原子性（Atomicity）、一致性（Consistency）、隔离性（Isolation）、持久性（Duration），简称<strong>ACID</strong></p>
+<h2 id="1）原子性（Atomicity）"><a href="#1）原子性（Atomicity）" class="headerlink" title="1）原子性（Atomicity）"></a>1）原子性（Atomicity）</h2><p>原子性是指事务包含的所有操作<strong>要么全部成功，要么全部失败回滚</strong>，因此事务的操作如果成功就必须要完全应用到数据库，如果操作失败则不能对数据库有任何影响。</p>
+<h2 id="2）一致性（Consistency）"><a href="#2）一致性（Consistency）" class="headerlink" title="2）一致性（Consistency）"></a>2）一致性（Consistency）</h2><p>致性是指事务必须使数据库<strong>从一个一致性状态变换到另一个一致性状态</strong>，也就是说一个事务执行之前和执行之后都必须处于一致性状态。<br>    拿转账来说，假设用户A和用户B两者的钱加起来一共是5000，那么不管A和B之间如何转账，转几次账，事务结束后两个用户的钱相加起来应该还得是5000，这就是事务的一致性。<br>    因此一致性更多的是要程序员去维护，因为出现一致性问题一般不是数据库本身机制问题，而是程序员的逻辑问题和代码的不严谨性问题。</p>
+<h2 id="3）隔离性（Isolation）"><a href="#3）隔离性（Isolation）" class="headerlink" title="3）隔离性（Isolation）"></a>3）隔离性（Isolation）</h2><p>隔离性是当多个用户并发访问数据库时，比如操作同一张表时，数据库为每一个用户开启的事务，不能被其他事务的操作所干扰，多个并发事务之间要相互隔离。</p>
+<p>即要达到这么一种效果：对于任意两个并发的事务T1和T2，<strong>在事务T1看来，T2要么在T1开始之前就已经结束，要么在T1结束之后才开始</strong>，这样每个事务都感觉不到有其他事务在并发地执行。</p>
+<p>多个事务并发访问时，事务之间是隔离的，一个事务不应该影响其它事务运行效果。这指的是在并发环境中，当不同的事务同时操纵相同的数据时，<strong>每个事务都有各自的完整数据空间</strong>。由并发事务所做的修改必须与任何其他并发事务所做的修改隔离。</p>
+<h3 id="不同的隔离级别"><a href="#不同的隔离级别" class="headerlink" title="不同的隔离级别"></a>不同的隔离级别</h3><h5 id="1、Read-Uncommitted（读取未提交-添加中文释义-内容）"><a href="#1、Read-Uncommitted（读取未提交-添加中文释义-内容）" class="headerlink" title="1、Read Uncommitted（读取未提交[添加中文释义]内容）"></a>1、Read Uncommitted（读取未提交[添加中文释义]内容）</h5><p>最低的隔离级别，什么都不需要做，一个事务可以读到另一个事务未提交的结果。所有的并发事务问题都会发生。<br>比如：事务A更改了数据X，但是还未提交，此时事务B去读取了数据X，得到的就不是最新的数据，这便是<strong>脏读（dirty read）</strong>。</p>
+<h5 id="2、Read-Committed（读取提交内容）"><a href="#2、Read-Committed（读取提交内容）" class="headerlink" title="2、Read Committed（读取提交内容）"></a>2、Read Committed（读取提交内容）</h5><p>只有在事务提交后，其更新结果才会被其他事务看见。可以解决脏读问题。这样上面的问题得到解决。<br>但是问题还是存在的，事务A select了一条数据，接着事务B update 这条数据，然后commit，这时候A还未提交，A再回来读这条数据，发现数据居然变了，这种情况叫做 <strong>不可重复读（Non-repeatable reads）</strong></p>
+<h5 id="3、Repeated-Read（可重复读）"><a href="#3、Repeated-Read（可重复读）" class="headerlink" title="3、Repeated Read（可重复读）"></a>3、Repeated Read（可重复读）</h5><p>在一个事务中，<strong>对于同一份数据的读取结果总是相同的</strong>，无论是否有其他事务对这份数据进行操作，以及这个事务是否提交。可以解决脏读、不可重复读。<br>具体来讲，即是在上一个级别的基础上，<strong>保证不会在一个事务内两次select同一条数据会出现变化</strong>，即使别的事务对你select的对象进行update操作不会影响。<br>但是，如果是insert操作，在这个隔离级别还是会受到影响。事务A开启事务，并select一段有范围的数据，然后事务B开启事务，在先前A事务select的那段有范围的数据中insert一条数据，然后提交事务，接着事务A再select出来这段数据，发现数据多了一条，这种情况叫<strong>幻读（Phantom Read）</strong></p>
+<h5 id="4、Serialization（可串行化）"><a href="#4、Serialization（可串行化）" class="headerlink" title="4、Serialization（可串行化）"></a>4、Serialization（可串行化）</h5><p>事务串行化执行，隔离级别最高，牺牲了系统的并发性。可以解决并发事务的所有问题。</p>
+<h2 id="4）持久性（Durability）"><a href="#4）持久性（Durability）" class="headerlink" title="4）持久性（Durability）"></a>4）持久性（Durability）</h2><p>持久性是指一个事务一旦被提交了，那么<strong>对数据库中的数据的改变就是永久性的</strong>，即便是在数据库系统遇到故障的情况下也不会丢失提交事务的操作。<br>    例如我们在使用JDBC操作数据库时，在提交事务方法后，提示用户事务操作完成，当我们程序执行完成直到看到提示后，就可以认定事务以及正确提交，即使这时候数据库出现了问题，也必须要将我们的事务完全执行完成，否则就会造成我们看到提示事务处理完毕，但是数据库因为故障而没有执行事务的重大错误。</p>
+<p>——————————————————————————————————————————————<br>参考：<br><a href="https://zhuanlan.zhihu.com/p/27035174" target="_blank" rel="noopener">浅析数据库事务的隔离性</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E4%B8%87%E7%89%A9%E7%9A%86%E5%8F%AF%E5%AD%98/" rel="tag"># 万物皆可存</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/02/11.%E7%A5%9E%E5%A5%87%E7%9A%84C++%E2%80%94%E2%80%94%E6%8C%87%E9%92%88/" rel="next" title="神奇的C++——指针">
+                <i class="fa fa-chevron-left"></i> 神奇的C++——指针
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/02/9.%E7%94%B5%E8%84%91%E7%AA%81%E7%84%B6%E6%97%A0%E6%B3%95%E6%98%BE%E7%A4%BA%E7%A1%AC%E7%9B%98%E5%B9%B6%E6%8F%90%E7%A4%BASMART%E9%94%99%E8%AF%AF%E7%9A%84%E4%BF%AE%E5%A4%8D%E5%8A%9E%E6%B3%95%E5%B0%9D%E8%AF%95/" rel="prev" title="电脑突然无法显示硬盘并提示SMART错误的修复办法尝试">
+                电脑突然无法显示硬盘并提示SMART错误的修复办法尝试 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.ico"
+                alt="Rjszz" />
+            
+              <p class="site-author-name" itemprop="name">Rjszz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库事务的4个特征"><span class="nav-number">1.</span> <span class="nav-text">数据库事务的4个特征</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库之事务"><span class="nav-number">1.1.</span> <span class="nav-text">数据库之事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务的4个基本特征"><span class="nav-number">1.2.</span> <span class="nav-text">事务的4个基本特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1）原子性（Atomicity）"><span class="nav-number">1.3.</span> <span class="nav-text">1）原子性（Atomicity）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2）一致性（Consistency）"><span class="nav-number">1.4.</span> <span class="nav-text">2）一致性（Consistency）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3）隔离性（Isolation）"><span class="nav-number">1.5.</span> <span class="nav-text">3）隔离性（Isolation）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不同的隔离级别"><span class="nav-number">1.5.1.</span> <span class="nav-text">不同的隔离级别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、Read-Uncommitted（读取未提交-添加中文释义-内容）"><span class="nav-number">1.5.1.0.1.</span> <span class="nav-text">1、Read Uncommitted（读取未提交[添加中文释义]内容）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、Read-Committed（读取提交内容）"><span class="nav-number">1.5.1.0.2.</span> <span class="nav-text">2、Read Committed（读取提交内容）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、Repeated-Read（可重复读）"><span class="nav-number">1.5.1.0.3.</span> <span class="nav-text">3、Repeated Read（可重复读）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、Serialization（可串行化）"><span class="nav-number">1.5.1.0.4.</span> <span class="nav-text">4、Serialization（可串行化）</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4）持久性（Durability）"><span class="nav-number">1.6.</span> <span class="nav-text">4）持久性（Durability）</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rjszz</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+</body>
+</html>

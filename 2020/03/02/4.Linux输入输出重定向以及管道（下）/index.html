@@ -13,6 +13,13 @@
 
 
 
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
 
 
 
@@ -74,15 +81,33 @@
 
 
 
+<meta name="description" content="Linux输入输出重定向以及管道(下)0X00 又见面了   昨天的内容还没讲完，今天就把它终结了吧！    0X10 输入重定向   昨天说完了输出重定向，今天就来说说输入重定向吧   有了昨天的基础，这个知识点就好理解一点了   到目前为止我们只讲了如何重定向命令的输出，也就是决定命令输出的信息的去向，现在我们做一点相反的事情：决定命令的输入来自哪里   当然了，不是所有的命令都有输入，也不是">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux输入输出重定向以及管道（下）">
 <meta property="og:url" content="http://yoursite.com/2020/03/02/4.Linux%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E9%87%8D%E5%AE%9A%E5%90%91%E4%BB%A5%E5%8F%8A%E7%AE%A1%E9%81%93%EF%BC%88%E4%B8%8B%EF%BC%89/index.html">
 <meta property="og:site_name" content="Rjszz Blog">
+<meta property="og:description" content="Linux输入输出重定向以及管道(下)0X00 又见面了   昨天的内容还没讲完，今天就把它终结了吧！    0X10 输入重定向   昨天说完了输出重定向，今天就来说说输入重定向吧   有了昨天的基础，这个知识点就好理解一点了   到目前为止我们只讲了如何重定向命令的输出，也就是决定命令输出的信息的去向，现在我们做一点相反的事情：决定命令的输入来自哪里   当然了，不是所有的命令都有输入，也不是">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200221211541858.jpg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020022121233310.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200221212803509.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200221213713797.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200221213852340.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200221214220305.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200221214835270.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020022121491993.jpg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200221214955547.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200221215608763.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200221220717694.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200221220652661.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200221221540586.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200221221920618.jpg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200221222348326.jpg">
 <meta property="article:published_time" content="2020-03-01T23:21:50.000Z">
-<meta property="article:modified_time" content="2020-03-02T00:24:02.871Z">
+<meta property="article:modified_time" content="2020-03-02T13:04:24.120Z">
 <meta property="article:author" content="Rjszz">
 <meta property="article:tag" content="My name is Linus, and I am your God">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200221211541858.jpg">
 
 
 
@@ -351,7 +376,36 @@
       
 
       
-        
+        <h1 id="Linux输入输出重定向以及管道-下"><a href="#Linux输入输出重定向以及管道-下" class="headerlink" title="Linux输入输出重定向以及管道(下)"></a>Linux输入输出重定向以及管道(下)</h1><h2 id="0X00-又见面了"><a href="#0X00-又见面了" class="headerlink" title="0X00 又见面了"></a>0X00 又见面了</h2><p>   昨天的内容还没讲完，今天就把它终结了吧！<br>   <img src="https://img-blog.csdnimg.cn/20200221211541858.jpg" alt="在这里插入图片描述"></p>
+<h2 id="0X10-输入重定向"><a href="#0X10-输入重定向" class="headerlink" title="0X10 输入重定向"></a>0X10 输入重定向</h2><p>   昨天说完了输出重定向，今天就来说说输入重定向吧<br>   有了昨天的基础，这个知识点就好理解一点了<br>   到目前为止我们只讲了如何重定向命令的输出，也就是决定命令输出的信息的去向，现在我们做一点相反的事情：决定命令的输入来自哪里<br>   当然了，不是所有的命令都有输入，也不是所有的命令都有输出。<br>   到目前为止，我们的命令的输入都来自于后面接的参数，这些参数有些是文件名，有些是目录名，等等。<br><img src="https://img-blog.csdnimg.cn/2020022121233310.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="1、-lt-：从文件中读取"><a href="#1、-lt-：从文件中读取" class="headerlink" title="1、 &lt;：从文件中读取"></a>1、 &lt;：从文件中读取</h4><p>   &lt;  的功能与  &gt;   的功能相反，用于指定命令的输入<br>   举例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat test.txt</span><br></pre></td></tr></table></figure>
+<p>  结果：<br><img src="https://img-blog.csdnimg.cn/20200221212803509.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>     哪有人要问了:这不是逗我吗，这和 cat test.txt  的结果一样，有什么区别？<br>     但事实上，两者的原理确实十分不同的：</p>
+<ul>
+<li>cat test.txt ：这种情况下，cat 命令接受的输入是 test.txt 这个文件名，那么它要先打开<br>test.txt文件，然后打印出文件内容。</li>
+<li>cat &lt; test.txt ：这种情况下，cat 命令接受的输入直接是 test.txt 这个文件的内容，cat<br>命令只负责将其内容打印。而打开文件并将文件内容传递给 cat 命令的工作则交给 Shell 程序（也就是控制终端的程序）来完成。</li>
+</ul>
+<h4 id="2、-lt-lt-：从键盘中读取"><a href="#2、-lt-lt-：从键盘中读取" class="headerlink" title="2、 &lt;&lt;：从键盘中读取"></a>2、 &lt;&lt;：从键盘中读取</h4><p>   &lt;&lt; 符号的作用是将键盘的输入重定向为某个命令的输入<br>   首先来认识一个指令：<br>   <strong>sort</strong><br>   这是用来排序的指令，比如有一个文件 num,txt  里面存储着一下内容：<br>   5<br>   8<br>   67<br>   1<br>   57<br>   如果我们执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sort -n num.txt</span><br></pre></td></tr></table></figure>
+<p> 会将其中的内容从小到大排序输出(-n是数字排序)<br> <img src="https://img-blog.csdnimg.cn/20200221213713797.png" alt="在这里插入图片描述"><br>  我们现在用sort指令来演示 &lt;&lt;  的作用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sort -n &lt;&lt; END</span><br></pre></td></tr></table></figure>
+<p>   输入之后进入键盘模式：<br>   <img src="https://img-blog.csdnimg.cn/20200221213852340.png" alt="在这里插入图片描述"><br>    提示我们需要进行输入，那什么时候停止呢？其实我们自己早就定义了，就是 &lt;&lt;  后面的END，这个可不是硬性规定，你们也可一自己规定，比如 2333，stop等<br><img src="https://img-blog.csdnimg.cn/20200221214220305.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>   可将 &lt;&lt; 从键盘读取的内容作为了sort 的输入</p>
+<p>   再看一个比较有意思的例子:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wc -m &lt;&lt; END</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200221214835270.png" alt="在这里插入图片描述"><br>   是不是有那味了<br>   <img src="https://img-blog.csdnimg.cn/2020022121491993.jpg" alt="在这里插入图片描述"><br>   上图：<br>   <img src="https://img-blog.csdnimg.cn/20200221214955547.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="0X20-：管道"><a href="#0X20-：管道" class="headerlink" title="0X20 | ：管道"></a>0X20 | ：管道</h2><p>   ！！！打几个！提醒一下大家，管道将我们在Linux中最常用的符号之一！</p>
+<p>  这就是传说中的“<strong>管道符号</strong>”</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">|</span><br></pre></td></tr></table></figure>
+<p>   那管道的作用究竟是啥呢？<br>   其实就好比水管：<br>   <strong>前面输出的水流变成后面输入的水流</strong>，<strong>一个命令的输出可以作为另一个命令的输入</strong><br>   <img src="https://img-blog.csdnimg.cn/20200221215608763.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>   可能现在大家还没有体会到它的强大魅力。还是来几个例子提提神吧</p>
+<h4 id="来，上例子！"><a href="#来，上例子！" class="headerlink" title="来，上例子！"></a>来，上例子！</h4><p> <strong>1、xxxxxxxxxxxx</strong>(毫无意义，仅为标号)<br>   我们还是用昨天的 csv 文件，里面有学生名字，成绩和评论，三栏<br><img src="https://img-blog.csdnimg.cn/20200221220717694.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>   我们用  ==cut -d , -f 1 notes.csv == 来剪切名字那一列。然后再用sort命令对剪切出来的内容排序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cut -d , -f 1 notes.csv | sort</span><br></pre></td></tr></table></figure>
+<p>   结果如下：<br><img src="https://img-blog.csdnimg.cn/20200221220652661.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>   可以看到这已经不是原来的排序了，而是字典序</p>
+<p><em>*2、 xxxxxxxxxxxxxxxxxxxxxxx</em><br>     还有我们在查找一个进程时，用到的 ps 指令。<br>    == ps -au ==  是将所有的用户进程列出来，但是有时候我们的进程很多，如果我们需要查找一个进程岂不是很难？<br>    所以如果我们能进行查找，岂不妙哉</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -au | grep zsh</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200221221540586.png" alt="在这里插入图片描述"><br>   东风快递，使命必达<br>   一声令下，送货到家<br>   <img src="https://img-blog.csdnimg.cn/20200221221920618.jpg" alt="在这里插入图片描述"><br>   当然，只要用到好，绝对受益终身！</p>
+<h2 id="0X30-后言"><a href="#0X30-后言" class="headerlink" title="0X30 后言"></a>0X30 后言</h2><p>   上下两篇，终于写了完，虽然是一些基础的东西，但是还是很有必要记录下来的。<br>   上篇在此：<a href="https://blog.csdn.net/rjszz1314/article/details/104417444" target="_blank" rel="noopener">Linux输入输出重定向以及管道(上)</a><br>   最后希望大家能够好好学习，天天向上！</p>
+<p>   最后的最后，大家江湖再见<br>   <img src="https://img-blog.csdnimg.cn/20200221222348326.jpg" alt="在这里插入图片描述"><br>   —————————————————————————————————————————————————<br>   参考：<a href="https://www.imooc.com/read/39/article/518" target="_blank" rel="noopener">Linux命令行与Shell脚本编程大全/24 输入重定向和管道，随意流转</a></p>
+
       
     </div>
     
@@ -445,8 +499,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -465,7 +528,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -476,7 +539,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -487,7 +550,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -510,6 +573,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux输入输出重定向以及管道-下"><span class="nav-number">1.</span> <span class="nav-text">Linux输入输出重定向以及管道(下)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0X00-又见面了"><span class="nav-number">1.1.</span> <span class="nav-text">0X00 又见面了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X10-输入重定向"><span class="nav-number">1.2.</span> <span class="nav-text">0X10 输入重定向</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、-lt-：从文件中读取"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">1、 &lt;：从文件中读取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、-lt-lt-：从键盘中读取"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">2、 &lt;&lt;：从键盘中读取</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X20-：管道"><span class="nav-number">1.3.</span> <span class="nav-text">0X20 | ：管道</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#来，上例子！"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">来，上例子！</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X30-后言"><span class="nav-number">1.4.</span> <span class="nav-text">0X30 后言</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="一入Bash深如海," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Bash基本语法介绍0X 00 前言   想必大家应该都了解，bash应该是进入Linux世界里最常用的shell，现在大多数Linux发行版都默认bash作为shell。   大家可以在终端输入： 1echo $SHELL    来查看自己的shell。而且shell是可以改变，可以通过 &#x3D;&#x3D;chsh&#x3D;&#x3D; 指令改变 1chsh -s &#x2F;bin&#x2F;zsh    意思是将shell改成zsh，当然前提">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bash基本语法介绍（上）">
+<meta property="og:url" content="http://yoursite.com/2020/03/02/5.Bash%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E4%BB%8B%E7%BB%8D%EF%BC%88%E4%B8%8A%EF%BC%89/index.html">
+<meta property="og:site_name" content="Rjszz Blog">
+<meta property="og:description" content="Bash基本语法介绍0X 00 前言   想必大家应该都了解，bash应该是进入Linux世界里最常用的shell，现在大多数Linux发行版都默认bash作为shell。   大家可以在终端输入： 1echo $SHELL    来查看自己的shell。而且shell是可以改变，可以通过 &#x3D;&#x3D;chsh&#x3D;&#x3D; 指令改变 1chsh -s &#x2F;bin&#x2F;zsh    意思是将shell改成zsh，当然前提">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200223203206185.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200223204103945.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020022320510958.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200223210538211.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/202002232115550.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200223211825880.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200223212816713.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200223213108569.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200223213846321.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200224172106400.png">
+<meta property="article:published_time" content="2020-03-02T13:05:01.000Z">
+<meta property="article:modified_time" content="2020-03-02T13:05:46.178Z">
+<meta property="article:author" content="Rjszz">
+<meta property="article:tag" content="一入Bash深如海">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200223203206185.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/02/5.Bash基本语法介绍（上）/"/>
+
+
+
+
+
+  <title>Bash基本语法介绍（上） | Rjszz Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+      <div class="site-meta-headline">
+        <a>
+          <img class="custom-logo-image" src="/images/avatar.ico"
+               alt="Rjszz Blog"/>
+        </a>
+      </div>
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rjszz Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Nothing is all</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/02/5.Bash%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E4%BB%8B%E7%BB%8D%EF%BC%88%E4%B8%8A%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rjszz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.ico">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rjszz Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Bash基本语法介绍（上）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-02T21:05:01+08:00">
+                2020-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/shell/" itemprop="url" rel="index">
+                    <span itemprop="name">shell</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Bash基本语法介绍"><a href="#Bash基本语法介绍" class="headerlink" title="Bash基本语法介绍"></a>Bash基本语法介绍</h2><h3 id="0X-00-前言"><a href="#0X-00-前言" class="headerlink" title="0X 00 前言"></a>0X 00 前言</h3><p>   想必大家应该都了解，bash应该是进入Linux世界里最常用的shell，现在大多数Linux发行版都默认bash作为shell。<br>   大家可以在终端输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br></pre></td></tr></table></figure>
+<p>   来查看自己的shell。而且shell是可以改变，可以通过 ==chsh== 指令改变</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chsh -s /bin/zsh</span><br></pre></td></tr></table></figure>
+<p>   意思是将shell改成zsh，当然前提是你拥有这个shell<br>   不知道有哪些shell？简单，shell列表保存在 ==/etc/shells== 中，直接cat一下就出来了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/shells</span><br></pre></td></tr></table></figure>
+
+<p>   好了，这些基本的都讲清楚了，开始讲语法吧!<br>   不过之前还是要说明一下：<br>   每种shell的语法可能会有所不同，但是基本一致。我们选用bash来讲，主要是它用的范围广，因此拎出来作为代表。<br>   废话少说，直接开始！</p>
+<h3 id="0X-10-创建一个shell脚本文件"><a href="#0X-10-创建一个shell脚本文件" class="headerlink" title="0X 10 创建一个shell脚本文件"></a>0X 10 创建一个shell脚本文件</h3><p>   shell脚本的后缀名是 ==.sh==，当然，我们只需要新建一个文档，直接改名字就好了。<br>   先给一个最简单的示例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Hello World"</span></span><br></pre></td></tr></table></figure>
+<p>   是不是很熟悉，哈哈哈哈，一门语言的标准开始</p>
+<p>   来解释一下 ==#== 是bash语言的注释符号，相当于C或者C++中的 ==//==<br>   但是第一句的 ==#!== 是连着一起的，被称作Shebang，操作系统看到Shebang的时候，会将后面内容作为解释器指令，并调用该指令。这句话其实是告诉我的脚本是用 ==bash== 来执行的 ，或者你可以指定其他的shell 比如 sh、zsh ，甚至可以不要，那么系统就会用默认的shell执行</p>
+<p>   我们来看如何运行：<br>   首先，由于我们是普通用户创建的，所以直接运行可能会有权限限制，我们需要改变运行权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x HelloWorld.sh</span><br></pre></td></tr></table></figure>
+<p>   现在在本目录下就可以直接运行啦：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./HelloWorld.sh</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200223203206185.png" alt="在这里插入图片描述"></p>
+<h3 id="0X-10-bash语言之变量"><a href="#0X-10-bash语言之变量" class="headerlink" title="0X 10 bash语言之变量"></a>0X 10 bash语言之变量</h3><p>   作为一门编程语言，变量是必不可少的，bash也有自己的变量定义方式。<br>   但是相比C++，java这些语言，bash的变量没有类型，可以直接定义(看起来有点像python)</p>
+<p><strong>1、变量定义</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">message=<span class="string">'Hello World'</span></span><br></pre></td></tr></table></figure>
+<p>   想定义直接就可以定义，想用就可以直接用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$message</span></span><br></pre></td></tr></table></figure>
+<p>  当我们需要注意的是，看起来很随便，但其实也并不是那么随便。比如，如果你在定义变量的时候，在中间打一个空格试试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">message=<span class="string">'Hello world'</span></span><br><span class="line">message =<span class="string">'Hello world'</span></span><br><span class="line">message = <span class="string">'Hello world'</span></span><br></pre></td></tr></table></figure>
+<p>   事实证明，以上三种都会报错：<br>   <img src="https://img-blog.csdnimg.cn/20200223204103945.png" alt="在这里插入图片描述"><br>   为什么呢？其实是以为当你一隔开，bash就会把你当做是一个命令，所以就会报错，说没有这样的指令。<br>   所以说，还是不能太随便啊</p>
+<p><strong>2、变量显示</strong><br>   其实我们前面已经用到了，也就是使用 <code>$</code> 符号，就想之前一样</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">message=<span class="string">'Hello World'</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$message</span></span><br></pre></td></tr></table></figure>
+<p>   这样就能将变量中的信息给提取出来了</p>
+<p>   但是我们会发现这样一个问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">message=<span class="string">"Hello World"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'The message is $message'</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/2020022320510958.png" alt="在这里插入图片描述"><br>   咦，没用了？确实，在这样的情况下不会将其进行解析。<br>   但是你会发现，将echo后面用双引号括起来就可以了</p>
+<p>   这我们就要讲到bash的三种引号了</p>
+<p><strong>3、三种引号</strong><br>   在bash中，引号一共有三种：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>表示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单引号</td>
+<td><strong>‘</strong></td>
+</tr>
+<tr>
+<td>双引号</td>
+<td><strong>“</strong></td>
+</tr>
+<tr>
+<td>反引号</td>
+<td><strong>`</strong></td>
+</tr>
+</tbody></table>
+<p><strong>区别：</strong></p>
+<ul>
+<li><p>单引号：如果变量被包含在单引号里面，那么变量不会被解析，美元符号（ $ ）保持原样输出</p>
+</li>
+<li><p>双引号：双引号忽略大多数特殊字符，但不包括：美元符号（ $ ）、反引号（ ` ）、反斜杠（ \ ），这 3<br>种特殊字符将不被忽略。不忽略美元符号意味着 Shell 在双引号内部可进行变量名替换。</p>
+</li>
+<li><p>反引号：要求 Shell 执行被它括起来的内容</p>
+<p>可能大家对反引号的使用有点不太清楚。来，我们来举一个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">message=`<span class="built_in">pwd</span>`</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"You are in the directory <span class="variable">$message</span>"</span></span><br></pre></td></tr></table></figure>
+<p>因为message是用反括号括起来的，所以会执行其中的内容，那么结果怎样呢？<br><img src="https://img-blog.csdnimg.cn/20200223210538211.png" alt="在这里插入图片描述"><br>现在懂了吧，所以说，反括号有时候还是十分有用滴。</p>
+</li>
+</ul>
+<h3 id="0X-20-bash语言之输入"><a href="#0X-20-bash语言之输入" class="headerlink" title="0X 20 bash语言之输入"></a>0X 20 bash语言之输入</h3><p><strong>1、使用read进行输入</strong><br>   刚才我们看到了 ehco 输出，那么自然要有输入——<strong><code>read</code></strong></p>
+<p>   直接来例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">read</span> name</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Hello <span class="variable">$name</span> !"</span></span><br></pre></td></tr></table></figure>
+<p>   运行：<br>   <img src="https://img-blog.csdnimg.cn/202002232115550.png" alt="在这里插入图片描述"><br>  会发现终端先是让你进行输入，然后输入的内容被存入变量name中，然后再进行显示</p>
+<p>  简单吧！</p>
+<p>  我们甚至可以用 read 命令一次性给多个变量赋值<br>  <img src="https://img-blog.csdnimg.cn/20200223211825880.png" alt="在这里插入图片描述"><br>  可以看到，空格将两个变量的内容分开了<br>  但是有一点：<br>  <strong>如果输入的参数比预期的要多，那么最后一个参数会将后面所有的内容都拿走</strong><br>  <img src="https://img-blog.csdnimg.cn/20200223212816713.png" alt="在这里插入图片描述"></p>
+<p><strong>2、使用 -p 输出提示</strong></p>
+<p>   但有时候我们可能需要加入一些提示，来提高我们脚本的交互性。这时候可以用 -p 参数来实现</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">'Please enter your name : '</span> name</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Hello <span class="variable">$name</span> !"</span></span><br></pre></td></tr></table></figure>
+<p>   运行结果：<br>   <img src="https://img-blog.csdnimg.cn/20200223213108569.png" alt="在这里插入图片描述"></p>
+<p><strong>3、使用 -s 隐藏输入</strong><br>   在某些情况下，我们需要隐藏我们的输入，比如输入密码的时候。这时候可以加上 <code>-s</code> 参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">read</span> -p <span class="string">'Please enter your password :\n '</span> -s pass</span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"\nThe password is <span class="variable">$pass</span> !"</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200223213846321.png" alt="在这里插入图片描述"><br>   在上面，echo 加上 -e 是为了让解析符号(\n)起作用，用来换行</p>
+<h3 id="0X-30-bash语言之数学运算"><a href="#0X-30-bash语言之数学运算" class="headerlink" title="0X 30 bash语言之数学运算"></a>0X 30 bash语言之数学运算</h3><p>   我们先在这提醒一下各位：</p>
+<blockquote>
+<p>在 Bash 中，所有的变量都是字符串！</p>
+</blockquote>
+<p>   看到着想必又有同学要问了：<br>   既然是字符串，那么bash不能做数学运算了？</p>
+<p>   这倒是一个好问题，作为一门编程语言，怎么能少的了数学运算呢？</p>
+<p>   但Bash本身确实是不会操纵数字。我们需要用指令来进行一波操作</p>
+<p>   这个指令就是——<code>let</code>，用于赋值</p>
+<p>   例如：</p>
+<blockquote>
+<p>let “a=5”<br>let “b=2”<br>let “c=a+b”</p>
+</blockquote>
+<p>   让我们来演示一波：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">let</span> <span class="string">"a=5"</span></span><br><span class="line"><span class="built_in">let</span> <span class="string">"b=2"</span></span><br><span class="line"><span class="built_in">let</span> <span class="string">"c=a+b"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"c=<span class="variable">$c</span>"</span></span><br></pre></td></tr></table></figure>
+<p>   结果如下：<br>   <img src="https://img-blog.csdnimg.cn/20200224172106400.png" alt="在这里插入图片描述"><br>   成了，完成了数学运算了</p>
+<p>   可用的运算符如下表：<br>  运算     |  符号<br>——–  |  —–<br>加法  | <strong>+</strong><br>减法  |  <strong>-</strong><br>乘法 |    *<br>除法 | /<br>幂(乘方) | **<br>余(整数除法的余数) |  %</p>
+<p>  除了幂（乘方）有点特殊（使用两个星号 <code>**</code>），其它都和一般的编程语言类似。</p>
+<p>   上例子：</p>
+<blockquote>
+<p>let “a = 5 * 3”  # $a = 15<br>let “a = 4 ** 2” # $a = 16 (4 的平方)<br>let “a = 8 / 2”  # $a = 4<br>let “a = 10 / 3” # $a = 3<br>let “a = 10 % 3” # $a = 1</p>
+</blockquote>
+<p>   还有一个规则和C风格很像：<br>  <code>let &quot;a *= 3&quot;</code><br>   没错相当于 <code>let &quot;a = a * 3&quot;</code></p>
+<p>  ————————我—————是———————分—————————割————————线———————<br>  好啦好啦，今天先讲到这了，后面的就放在下篇了<br>  链接也放这里啦，希望大家多多支持～<br>  <a href="https://blog.csdn.net/rjszz1314/article/details/104481628" target="_blank" rel="noopener">Bash基本语法介绍(下)</a></p>
+<p>  ———————参—————————考———————————博———————————客—————————<br>  <a href="https://www.imooc.com/read/39/article/536" target="_blank" rel="noopener">Linux命令行与Shell脚本编程大全/42 变量在手，Shell不愁</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E4%B8%80%E5%85%A5Bash%E6%B7%B1%E5%A6%82%E6%B5%B7/" rel="tag"># 一入Bash深如海</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/02/6.shell%E5%B8%B8%E7%94%A8%E7%9A%84%E6%9D%A1%E4%BB%B6%E6%B5%8B%E8%AF%95/" rel="next" title="shell常用的条件测试">
+                <i class="fa fa-chevron-left"></i> shell常用的条件测试
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/02/8.Linux%E9%85%8D%E7%BD%AEpac%E6%9C%80%E6%96%B0%E6%96%B9%E6%B3%95%E2%80%94%E2%80%94%E8%A7%A3%E5%86%B3%E6%96%B0%E7%89%88chrome%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98/" rel="prev" title="Linux配置pac最新方法——解决新版chrome无法使用问题">
+                Linux配置pac最新方法——解决新版chrome无法使用问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.ico"
+                alt="Rjszz" />
+            
+              <p class="site-author-name" itemprop="name">Rjszz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bash基本语法介绍"><span class="nav-number">1.</span> <span class="nav-text">Bash基本语法介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0X-00-前言"><span class="nav-number">1.1.</span> <span class="nav-text">0X 00 前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0X-10-创建一个shell脚本文件"><span class="nav-number">1.2.</span> <span class="nav-text">0X 10 创建一个shell脚本文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0X-10-bash语言之变量"><span class="nav-number">1.3.</span> <span class="nav-text">0X 10 bash语言之变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0X-20-bash语言之输入"><span class="nav-number">1.4.</span> <span class="nav-text">0X 20 bash语言之输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0X-30-bash语言之数学运算"><span class="nav-number">1.5.</span> <span class="nav-text">0X 30 bash语言之数学运算</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rjszz</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+</body>
+</html>
