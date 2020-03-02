@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="一入Bash深如海," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Bash基本语法介绍(下)0X00  前言   上次我们讲到了bash的数学运算，今天都是就把剩下的全搬出来。   都是些基本的东西，希望大家能多多支持   还是老规则，先把上篇给挂出来：   Bash基本语法介绍(上) 0X10  Bash语言之参数   我们知道，在运行一些C++或者java代码时，有些需要输入一些参数。    那么我们的Bash有没有参数的设置呢？    答案是：有    我">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bash基本语法介绍（下）">
+<meta property="og:url" content="http://yoursite.com/2020/03/02/5.Bash%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E4%BB%8B%E7%BB%8D%EF%BC%88%E4%B8%8B%EF%BC%89/index.html">
+<meta property="og:site_name" content="Rjszz Blog">
+<meta property="og:description" content="Bash基本语法介绍(下)0X00  前言   上次我们讲到了bash的数学运算，今天都是就把剩下的全搬出来。   都是些基本的东西，希望大家能多多支持   还是老规则，先把上篇给挂出来：   Bash基本语法介绍(上) 0X10  Bash语言之参数   我们知道，在运行一些C++或者java代码时，有些需要输入一些参数。    那么我们的Bash有没有参数的设置呢？    答案是：有    我">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200224175540937.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200224180722954.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200224180924892.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020022420302742.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200224211351843.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200224213818932.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200224214355390.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200224220021867.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200224220544759.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200224221256622.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200224221527333.png">
+<meta property="article:published_time" content="2020-03-02T00:48:00.000Z">
+<meta property="article:modified_time" content="2020-03-02T00:51:48.895Z">
+<meta property="article:author" content="Rjszz">
+<meta property="article:tag" content="一入Bash深如海">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200224175540937.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/02/5.Bash基本语法介绍（下）/"/>
+
+
+
+
+
+  <title>Bash基本语法介绍（下） | Rjszz Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rjszz Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Nothing is all</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/02/5.Bash%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E4%BB%8B%E7%BB%8D%EF%BC%88%E4%B8%8B%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rjszz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rjszz Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Bash基本语法介绍（下）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-02T08:48:00+08:00">
+                2020-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/shell/" itemprop="url" rel="index">
+                    <span itemprop="name">shell</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Bash基本语法介绍-下"><a href="#Bash基本语法介绍-下" class="headerlink" title="Bash基本语法介绍(下)"></a>Bash基本语法介绍(下)</h2><h3 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00  前言"></a>0X00  前言</h3><p>   上次我们讲到了bash的数学运算，今天都是就把剩下的全搬出来。<br>   都是些基本的东西，希望大家能多多支持<br>   还是老规则，先把上篇给挂出来：<br>   <a href="https://blog.csdn.net/rjszz1314/article/details/104466193" target="_blank" rel="noopener">Bash基本语法介绍(上)</a></p>
+<h3 id="0X10-Bash语言之参数"><a href="#0X10-Bash语言之参数" class="headerlink" title="0X10  Bash语言之参数"></a>0X10  Bash语言之参数</h3><p>   我们知道，在运行一些C++或者java代码时，有些需要输入一些参数。</p>
+<p>   那么我们的Bash有没有参数的设置呢？</p>
+<p>   答案是：有</p>
+<p>   我们可以这样调用我们的脚本文件：</p>
+<blockquote>
+<p>   ./variable.sh 参数1 参数2 参数3 …</p>
+</blockquote>
+<p>   那么问题是我们怎么在代码里面进行接受呢？</p>
+<p>   简单的出乎你的意料，哈哈</p>
+<ul>
+<li>$# ：包含参数的数目。 </li>
+<li>$0 ：包含被运行的脚本的名称 （我们的示例中就是 variable.sh ）。 </li>
+<li>$1：包含第一个参数。</li>
+<li>$2：包含第二个参数。<br>  …<ul>
+<li>$8 ：包含第八个参数。<br> …<br>以此类推。</li>
+</ul>
+</li>
+</ul>
+<p>   来个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"There are <span class="variable">$#</span> students.\n"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"They are <span class="variable">$1</span>,<span class="variable">$2</span> and <span class="variable">$3</span>."</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200224175540937.png" alt="在这里插入图片描述"></p>
+<h3 id="0X20-Bash语言之数组"><a href="#0X20-Bash语言之数组" class="headerlink" title="0X20  Bash语言之数组"></a>0X20  Bash语言之数组</h3><p>   Bash也支持数组</p>
+<p>   我们可以声明以下数组</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array=(<span class="string">'value0'</span> <span class="string">'value1'</span> <span class="string">'value2'</span>)</span><br></pre></td></tr></table></figure>
+<p>   要想访问其中的内容也是直接下标访问就好：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$&#123;array[2]&#125;</span></span><br></pre></td></tr></table></figure>
+<p>   但是需要注意：</p>
+<blockquote>
+<p>   和大多数编程语言一样，Shell 中的数组的下标（index）也基本是从 0 开始的，而不是从 1 开始。&gt;     因此，第一个元素的编号（下标）就是 0，第二个元素的下标就是 1，以此类推。<br>   不过，也不是所有 Shell 语言的数组下标都是从 0 开始，不少 Shell 语言（例如 Csh，Tcsh，Zsh，等等）的数组下标是从 1 开始的。</p>
+</blockquote>
+<pre><code>也可以单独给数组的元素赋值，例如：</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array[3]=<span class="string">'value3'</span></span><br></pre></td></tr></table></figure>
+
+<p>   举例举例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">array=(<span class="string">'value0'</span> <span class="string">'value1'</span> <span class="string">'value2'</span>)</span><br><span class="line">array[5]=<span class="string">'value5'</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;array[1]&#125;</span></span><br></pre></td></tr></table></figure>
+<p>   结果：<br>   <img src="https://img-blog.csdnimg.cn/20200224180722954.png" alt="在这里插入图片描述"><br>   可以看到有一点与我们平时不太一样：<br>   <strong>数组的元素编号不需要是连续的</strong></p>
+<p>   我们可以直接跳过一些序号</p>
+<p>   也可以一次性显示数组中所有的元素值，需要用到通配符 <code>*</code>（星号）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">array=(<span class="string">'value0'</span> <span class="string">'value1'</span> <span class="string">'value2'</span>)</span><br><span class="line">array[5]=<span class="string">'value5'</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;array[*]&#125;</span></span><br></pre></td></tr></table></figure>
+<p>   <img src="https://img-blog.csdnimg.cn/20200224180924892.png" alt="在这里插入图片描述"></p>
+<h3 id="0X30-Bash语言之条件语句"><a href="#0X30-Bash语言之条件语句" class="headerlink" title="0X30  Bash语言之条件语句"></a>0X30  Bash语言之条件语句</h3><p>   好了好了，我们终于来到了条件语句了</p>
+<p>   话不多说，直接开说</p>
+<p><strong>1、if：最简单的条件</strong></p>
+<p>   在Bash中，if语句的格式是这样的：</p>
+<blockquote>
+<p>   if [ 条件测试 ]<br>   then<br>       …<br>   fi</p>
+</blockquote>
+<pre><code>以 if 的倒装 fi 作为结束，Bash果然特立独行
+
+**注意！！！**</code></pre><blockquote>
+<p>方括号 <code>[]</code> 中的 <code>条件测试</code>两边必须要空一格。不能写成 <code>[test]</code>，而要写成 <code>[ test ]</code></p>
+</blockquote>
+<p>   我们还有另外的一种写法：</p>
+<blockquote>
+<p>   if [ 条件测试 ] ; then<br>       …<br>   fi</p>
+</blockquote>
+<pre><code>来看一个例子：</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># condition.sh</span></span><br><span class="line">name=<span class="string">"Enming"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$name</span> = <span class="string">"Enming"</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">   <span class="built_in">echo</span> <span class="string">"Hello <span class="variable">$name</span> !"</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>   <img src="https://img-blog.csdnimg.cn/2020022420302742.png" alt="在这里插入图片描述"></p>
+<p>   从以上例子可以看出，我们的if条件还是比较容易理解的，但是也应该注意到：</p>
+<blockquote>
+<p> <strong>在 Shell 语言中，“等于”是用一个等号（ = ）来表示的</strong></p>
+</blockquote>
+<p><strong>2、if  else：条件分支</strong></p>
+<p>   if 和 else  两者配合的逻辑是这样的：</p>
+<blockquote>
+<p>if [ 条件测试 ]<br>then<br>    做这个<br>else<br>    做那个<br>fi</p>
+</blockquote>
+<p>   还是直接来例子，比较容易理解：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">name1=<span class="string">"Enming"</span></span><br><span class="line">name2=<span class="string">"Oscar"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$name1</span> = <span class="variable">$name2</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"You two have the same name !"</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"You two have different names !"</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>   结果就不贴了，大家可以自己试一试</p>
+<p>  当然也有 <code>elif</code> 的使用</p>
+<p>  使用是这样的：</p>
+<blockquote>
+<p>if [ 条件测试 1 ]<br>then<br>    做事情 1<br>elif [ 条件测试 2 ]<br>then<br>    做事情 2<br>elif [ 条件测试 3 ]<br>then<br>    做事情 3<br>else<br>    做其他事情<br>fi</p>
+</blockquote>
+<pre><code>这使用还是简单的，只要稍微有一点编程基础</code></pre><p><strong>3、case 条件选择</strong></p>
+<p>   Bash也支持case选择<br>   这个也不必多说，直接来个例子就什么就懂了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="variable">$1</span> <span class="keyword">in</span></span><br><span class="line">    <span class="string">"Matthew"</span>)</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Hello Matthew !"</span></span><br><span class="line">        ;;</span><br><span class="line">    <span class="string">"Mark"</span>)</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Hello Mark !"</span></span><br><span class="line">        ;;</span><br><span class="line">    <span class="string">"Luke"</span>)</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Hello Luke !"</span></span><br><span class="line">        ;;</span><br><span class="line">    <span class="string">"John"</span>)</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Hello John !"</span></span><br><span class="line">        ;;</span><br><span class="line">    *)</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Sorry, I do not know you."</span></span><br><span class="line">        ;;</span><br><span class="line"><span class="keyword">esac</span></span><br></pre></td></tr></table></figure>
+<p>   结束也是 <code>esac</code> ，哈哈哈神奇<br>   还有就是  可以看到<code>;;</code> 符号，其实相当于C语言的 break</p>
+<h3 id="0X40-Bash语言之循环语句"><a href="#0X40-Bash语言之循环语句" class="headerlink" title="0X40  Bash语言之循环语句"></a>0X40  Bash语言之循环语句</h3><p>   条件之后便是循环，学习一般语言的基本套路</p>
+<p><strong>1、while 循环</strong></p>
+<p>   while  的循环判断逻辑是这样的：</p>
+<blockquote>
+<p>while [ 条件测试 ]<br>do<br>    做某些事<br>done</p>
+</blockquote>
+<p>   终于不是倒装结尾了！大概是 elihw 看起来太奇怪了2333</p>
+<p>  当然，依旧可以将    <code>do</code> 提上去</p>
+<blockquote>
+<p>while [ 条件测试 ]; do<br>    做某些事<br>done</p>
+</blockquote>
+<p>   来看一个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> [ -z <span class="variable">$response</span> ] || [ <span class="variable">$response</span> != <span class="string">'yes'</span> ]</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">read</span> -p <span class="string">'Say yes : '</span> response</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<p>  执行结果：<br>  <img src="https://img-blog.csdnimg.cn/20200224211351843.png" alt="在这里插入图片描述"><br>  while 的判断条件是 </p>
+<ul>
+<li><p>response 是否为空 ：<code>-z $response</code></p>
+</li>
+<li><p>response 是否不等于 ‘yes’ ：<code>$response != &#39;yes&#39;</code></p>
+<p>关于bash中有哪些判断条件，我会进行整理，再最后放上链接，有兴趣的同学可以去看一看</p>
+</li>
+</ul>
+<p><strong>2、until 循环</strong></p>
+<p>   我们知道一般程序语言中，有循环 while  ，就会有对应的   do…while</p>
+<p>   bash也少不了，但是关键词是——<code>until</code></p>
+<p>   表示先执行语句，再进行判断</p>
+<p>   举例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">until [ <span class="string">"<span class="variable">$response</span>"</span> = <span class="string">'yes'</span> ]</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">read</span> -p <span class="string">'Say yes : '</span> response</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<p>   效果和前面是一样的</p>
+<p><strong>3、for  循环</strong><br>   说道循环，当然少不了 for 循环</p>
+<p>   bash的for循环和C，C++等有点不一样，但是和python倒是有点相似</p>
+<p>   基本逻辑如下：</p>
+<blockquote>
+<p>for 变量 in ‘值1’ ‘值2’ ‘值3’ … ‘值n’<br>do<br>    做某些事<br>done</p>
+</blockquote>
+<p>   来给个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> animal <span class="keyword">in</span> <span class="string">'dog'</span> <span class="string">'cat'</span> <span class="string">'pig'</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Animal being analyzed : <span class="variable">$animal</span>"</span> </span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<p>   结果如下：<br><img src="https://img-blog.csdnimg.cn/20200224213818932.png" alt="在这里插入图片描述"><br>   看到循环的遍历上面的变量</p>
+<p>   for 循环的取值列表不一定要在代码中定义好，我们也可以用一个变量，如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">listfile=`ls`</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> <span class="variable">$listfile</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"File found : <span class="variable">$file</span>"</span> </span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<p>   这里用到了反引号，上面的循环会打印出当前目录下的文件</p>
+<p>   或者是直接不用变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> file <span class="keyword">in</span> `ls`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"File found : <span class="variable">$file</span>"</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>   好了，现在又有人要问题，要是想像一般for循环一样，规定循环次数，怎么做呢？<br>   好，请看下面：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 1 10`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$i</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200224214355390.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>   循环打印1到10</p>
+<p>   现在心满意足了吧</p>
+<p>   要是还不满足，再看</p>
+<p>   如果我要跳着循环，比如1 3 5这样有间隔的呢？<br>   也是可以的！</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `seq 1 2 10`</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="variable">$i</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<p>   成，完美了</p>
+<h3 id="0X40-Bash语言之函数"><a href="#0X40-Bash语言之函数" class="headerlink" title="0X40  Bash语言之函数"></a>0X40  Bash语言之函数</h3><p>   终于，终于来到最后一部分——函数了。<br>   相信大家也已经看累了，我也是码累了，最后一点，大家坚持！我们直接开门见山</p>
+<p><strong>1、函数的定义</strong></p>
+<p>   Bash的函数定义为：</p>
+<blockquote>
+<p>函数名 () {<br>    函数体<br>}</p>
+</blockquote>
+<p>或者：</p>
+<blockquote>
+<p>function 函数名 {<br>    函数体<br>}</p>
+</blockquote>
+<p>需要注意：</p>
+<blockquote>
+<p>函数名后面跟着的圆括号里不加任何参数，这和其他编程语言是很不一样的</p>
+</blockquote>
+<p>  我们还是需要例子来理解一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">print_something</span></span> () &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"Hello, I am a function"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print_something</span><br><span class="line">print_something</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200224220021867.png" alt="在这里插入图片描述"></p>
+<p><strong>2、参数传递</strong></p>
+<p>   既然函数括号里面不能写参数，那么我们怎么样才能传递参数呢？</p>
+<p>   其实只要你能联想一下之前的参数传递，大概知道了</p>
+<p>   没错，函数的参数传递也是 <code>$1</code>，<code>$2</code>，<code>$3</code></p>
+<p>   来个例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">print_something</span></span> () &#123;</span><br><span class="line">    <span class="built_in">echo</span> Hello <span class="variable">$1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print_something Matthew</span><br><span class="line">print_something Mark</span><br><span class="line">print_something Luke</span><br><span class="line">print_something John</span><br></pre></td></tr></table></figure>
+<p>   结果如下：<br>   <img src="https://img-blog.csdnimg.cn/20200224220544759.png" alt="在这里插入图片描述"></p>
+<p>   看了这个大家应该就明白啦，和之前讲的一模一样嘛</p>
+<p><strong>3、返回值</strong><br>   Shell 的函数可以返回一个状态，有点类似一个程序或命令退出时会有一个退出状态，表明是否成功</p>
+<p>   Shell 函数要返回状态，也用 return 这个关键字</p>
+<p>   例子：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">print_something</span></span> () &#123;</span><br><span class="line">    <span class="built_in">echo</span> Hello <span class="variable">$1</span></span><br><span class="line">    <span class="built_in">return</span> 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">print_something Luke</span><br><span class="line">print_something John</span><br><span class="line"><span class="built_in">echo</span> Return value of previous <span class="keyword">function</span> is $?</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>第 5 行：返回的状态不一定要是被硬编码的（比如上例中的 1 ），也可以是一个变量。</li>
+<li>第 10 行：变量 $? 包含前一次被运行的命令或函数的返回状态。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20200224221256622.png" alt="在这里插入图片描述"></p>
+<p>   如果你实在想要函数返回一个数值（比如说一个计算的值），那么你也可以用命令的执行结果。</p>
+<p>   如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">lines_in_file</span></span> () &#123;</span><br><span class="line">    cat <span class="variable">$1</span> | wc -l</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">line_num=$(lines_in_file <span class="variable">$1</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> The file <span class="variable">$1</span> has <span class="variable">$line_num</span> lines</span><br></pre></td></tr></table></figure>
+<p>  假设这里有一个 test_file文件，可以统计其中的行数并且返回<br>  <img src="https://img-blog.csdnimg.cn/20200224221527333.png" alt="在这里插入图片描述"></p>
+<h3 id="0X50-后言"><a href="#0X50-后言" class="headerlink" title="0X50  后言"></a>0X50  后言</h3><p>   好啦，好啦，终于码完了！<br>   只是一些基础的东西，没想到水了这么多。<br>   当然我也是参照  <a href="https://www.imooc.com/t/1289460" target="_blank" rel="noopener">Oscar</a> 大佬的专栏，真的写的很好！等一下给出链接，大家可以去看看～</p>
+<p>   后面还给出了 shell常用的条件测试指令与参数   ，有兴趣的同学可以去看看～</p>
+<p>   那么，大家再见啦～</p>
+<p>   相关：<br>   <a href="https://blog.csdn.net/rjszz1314/article/details/104481628" target="_blank" rel="noopener">Bash基本语法介绍(上)</a><br>   <a href="https://blog.csdn.net/rjszz1314/article/details/104487269" target="_blank" rel="noopener">shell常用的条件测试指令与参数</a><br>————————————————————————————————————————————————————<br>   参考：<a href="https://www.imooc.com/read/39" target="_blank" rel="noopener">Linux命令行与Shell脚本编程大全</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E4%B8%80%E5%85%A5Bash%E6%B7%B1%E5%A6%82%E6%B5%B7/" rel="tag"># 一入Bash深如海</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/02/4.Linux%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E9%87%8D%E5%AE%9A%E5%90%91%E4%BB%A5%E5%8F%8A%E7%AE%A1%E9%81%93%EF%BC%88%E4%B8%8A%EF%BC%89/" rel="next" title="Linux输入输出重定向以及管道（上）">
+                <i class="fa fa-chevron-left"></i> Linux输入输出重定向以及管道（上）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/02/7.TCP%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%80%A7%E4%BF%9D%E8%AF%81%E6%9C%BA%E5%88%B6/" rel="prev" title="TCP的可靠性保证机制">
+                TCP的可靠性保证机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Rjszz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bash基本语法介绍-下"><span class="nav-number">1.</span> <span class="nav-text">Bash基本语法介绍(下)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0X00-前言"><span class="nav-number">1.1.</span> <span class="nav-text">0X00  前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0X10-Bash语言之参数"><span class="nav-number">1.2.</span> <span class="nav-text">0X10  Bash语言之参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0X20-Bash语言之数组"><span class="nav-number">1.3.</span> <span class="nav-text">0X20  Bash语言之数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0X30-Bash语言之条件语句"><span class="nav-number">1.4.</span> <span class="nav-text">0X30  Bash语言之条件语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0X40-Bash语言之循环语句"><span class="nav-number">1.5.</span> <span class="nav-text">0X40  Bash语言之循环语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0X40-Bash语言之函数"><span class="nav-number">1.6.</span> <span class="nav-text">0X40  Bash语言之函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0X50-后言"><span class="nav-number">1.7.</span> <span class="nav-text">0X50  后言</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rjszz</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

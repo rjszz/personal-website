@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="My name is Linus, and I am your God," />
+  <meta name="keywords" content="Network for you and me, sharing everyone!," />
 
 
 
@@ -79,15 +79,22 @@
 
 
 
+<meta name="description" content="TCP的可靠性保证机制前言我们常说，UDP是不可靠的通信协议，而后来发展的TCP弥补了UDP的不可靠缺陷，那么TCP是靠什么来保证可靠性的呢？ 0X10 序列号、确认应答、超时重传当接收方收到报文时就会确认，如果发送方发送一段时间后没有确认就重传 0X11 窗口控制与高速重发控制&#x2F;快速重传（重复确认应答）   TCP会利用窗口控制来提高传输速度，意思是在一个窗口大小内，不用一定要等到应答才能发送下">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux输入输出重定向以及管道（下）">
-<meta property="og:url" content="http://yoursite.com/2020/03/02/4.Linux%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E9%87%8D%E5%AE%9A%E5%90%91%E4%BB%A5%E5%8F%8A%E7%AE%A1%E9%81%93%EF%BC%88%E4%B8%8B%EF%BC%89/index.html">
+<meta property="og:title" content="TCP的可靠性保证机制">
+<meta property="og:url" content="http://yoursite.com/2020/03/02/7.TCP%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%80%A7%E4%BF%9D%E8%AF%81%E6%9C%BA%E5%88%B6/index.html">
 <meta property="og:site_name" content="Rjszz Blog">
-<meta property="article:published_time" content="2020-03-01T23:21:50.000Z">
-<meta property="article:modified_time" content="2020-03-02T00:24:02.871Z">
+<meta property="og:description" content="TCP的可靠性保证机制前言我们常说，UDP是不可靠的通信协议，而后来发展的TCP弥补了UDP的不可靠缺陷，那么TCP是靠什么来保证可靠性的呢？ 0X10 序列号、确认应答、超时重传当接收方收到报文时就会确认，如果发送方发送一段时间后没有确认就重传 0X11 窗口控制与高速重发控制&#x2F;快速重传（重复确认应答）   TCP会利用窗口控制来提高传输速度，意思是在一个窗口大小内，不用一定要等到应答才能发送下">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200213205855307.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200213205959788.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200213210205829.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200213210251168.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2020-03-02T00:53:52.000Z">
+<meta property="article:modified_time" content="2020-03-02T00:58:12.342Z">
 <meta property="article:author" content="Rjszz">
-<meta property="article:tag" content="My name is Linus, and I am your God">
+<meta property="article:tag" content="Network for you and me, sharing everyone!">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200213205855307.png">
 
 
 
@@ -117,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/03/02/4.Linux输入输出重定向以及管道（下）/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/03/02/7.TCP的可靠性保证机制/"/>
 
 
 
 
 
-  <title>Linux输入输出重定向以及管道（下） | Rjszz Blog</title>
+  <title>TCP的可靠性保证机制 | Rjszz Blog</title>
   
 
 
@@ -260,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/02/4.Linux%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E9%87%8D%E5%AE%9A%E5%90%91%E4%BB%A5%E5%8F%8A%E7%AE%A1%E9%81%93%EF%BC%88%E4%B8%8B%EF%BC%89/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/02/7.TCP%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%80%A7%E4%BF%9D%E8%AF%81%E6%9C%BA%E5%88%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rjszz">
@@ -277,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Linux输入输出重定向以及管道（下）</h1>
+          <h1 class="post-title" itemprop="name headline">TCP的可靠性保证机制</h1>
         
 
         <div class="post-meta">
@@ -289,7 +296,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-02T07:21:50+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-02T08:53:52+08:00">
                 2020-03-02
               </time>
             
@@ -312,8 +319,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
                   </a>
                 </span>
 
@@ -349,7 +356,20 @@
       
 
       
-        
+        <h1 id="TCP的可靠性保证机制"><a href="#TCP的可靠性保证机制" class="headerlink" title="TCP的可靠性保证机制"></a>TCP的可靠性保证机制</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们常说，UDP是不可靠的通信协议，而后来发展的TCP弥补了UDP的不可靠缺陷，那么TCP是靠什么来保证可靠性的呢？</p>
+<h2 id="0X10-序列号、确认应答、超时重传"><a href="#0X10-序列号、确认应答、超时重传" class="headerlink" title="0X10 序列号、确认应答、超时重传"></a>0X10 序列号、确认应答、超时重传</h2><p>当接收方收到报文时就会确认，如果发送方发送一段时间后没有确认就<strong>重传</strong></p>
+<h2 id="0X11-窗口控制与高速重发控制-快速重传（重复确认应答）"><a href="#0X11-窗口控制与高速重发控制-快速重传（重复确认应答）" class="headerlink" title="0X11 窗口控制与高速重发控制/快速重传（重复确认应答）"></a>0X11 窗口控制与高速重发控制/快速重传（重复确认应答）</h2><p>   TCP会利用窗口控制来提高传输速度，意思是在一个窗口大小内，<strong>不用一定要等到应答才能发送下一段数据</strong>，窗口大小就是无需等待确认而可以继续发送数据的最大值<br>   如果数据段1001-2000丢失，后面数据每次传输，确认应答都会<strong>不停地发送序号为1001的应答，表示我要接收1001开始的数据</strong>，发送端如果收到3次相同应答，就会立刻进行重发<br>   <strong>接收窗口：</strong><img src="https://img-blog.csdnimg.cn/20200213205855307.png" alt="在这里插入图片描述"><br>“接收窗口”大小取决于应用（比如说tomcat：8080端口的监听进程）、系统、硬件的限制。图中，接收窗口是31~50，大小为20。<br>　　在接收窗口中，黑色的表示已收到的数据，白色的表示未收到的数据。<br>　　当收到窗口左边的数据，如27，则丢弃，因为这部分已经交付给主机；<br>　　当收到窗口左边的数据，如52，则丢弃，因为还没轮到它；<br>　　当收到已收到的窗口中的数据，如32，丢弃；<br>　　当收到未收到的窗口中的数据，如35，缓存在窗口中。</p>
+<p><strong>发送窗口</strong><br><img src="https://img-blog.csdnimg.cn/20200213205959788.png" alt="在这里插入图片描述"></p>
+<h2 id="0X13-拥塞控制"><a href="#0X13-拥塞控制" class="headerlink" title="0X13 拥塞控制"></a>0X13 拥塞控制</h2><p>   如果窗口很大，发送端连续发送大量的数据，可能会造成网络的拥堵，TCP为了防止这种情况从而设计了<strong>拥塞控制</strong></p>
+<p>   慢启动：定义拥塞窗口，一开始将该窗口大小设为1，之后每次收到确认应答（经过一个rtt），将拥塞窗口大小*2</p>
+<p>   拥塞避免：设置慢启动<strong>阈值</strong>，拥塞避免是指当拥塞窗口大小达到这个阈值，拥塞窗口的值不再指数上升，而是<strong>加法增加</strong>（每次确认应答/每个rtt，拥塞窗口大小+1），以此来避免拥塞</p>
+<p>   将报文段的超时重传看做<strong>拥塞</strong>，则一旦发生超时重传，我们需要先将阈值设为当前窗口大小的一半，并且将窗口大小设为初值1，然后重新进入慢启动过程</p>
+<p>   快速重传：在遇到3次重复确认应答（高速重发控制）时，代表收到了3个报文段，但是这之前的1个段丢失了，便对它进行立即重传。</p>
+<p>   然后，先将阈值设为当前窗口大小的一半，然后将拥塞窗口大小设为慢启动<strong>阈值+3</strong>的大小</p>
+<p>   这样，在TCP通信中，网络的吞吐量呈现逐渐上升，并且随着拥堵来降低吞吐量，再进入慢慢上升的过程，网络不会轻易发生瘫痪<br> <img src="https://img-blog.csdnimg.cn/20200213210205829.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="0X14-流量控制"><a href="#0X14-流量控制" class="headerlink" title="0X14 流量控制"></a>0X14 流量控制</h2><p>   简单来说就是接收方处理不过来的时候，就把窗口缩小，并把窗口值告诉发送端<img src="https://img-blog.csdnimg.cn/20200213210251168.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>死锁：<br>   当发送者收到了一个<strong>窗口为0</strong>的应答，发送者便停止发送，等待接收者的下一个应答。但是如果这个<strong>窗口不为0的应答在传输过程丢失</strong>，发送者一直等待下去，而接收者以为发送者已经收到该应答，等待接收新数据，这样双方就相互等待，从而产生死锁</p>
+<p>   为了避免死锁，TCP采用了<strong>持续计时器</strong>，每当发送者<strong>收到一个零窗口的应答后就启动该计时器</strong>。时间一到便主动发送报文询问接收者的窗口大小。若接收者仍然返回零窗口，则重置该计时器继续等待；若窗口不为0，则表示应答报文丢失了，此时重置发送窗口后开始发送。</p>
+
       
     </div>
     
@@ -366,7 +386,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/My-name-is-Linus-and-I-am-your-God/" rel="tag"># My name is Linus, and I am your God</a>
+            <a href="/tags/Network-for-you-and-me-sharing-everyone/" rel="tag"># Network for you and me, sharing everyone!</a>
           
         </div>
       
@@ -379,8 +399,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/03/01/88.%E5%89%91%E6%8C%87offer%E9%A2%985%E2%80%94%E2%80%94%E6%9B%BF%E6%8D%A2%E7%A9%BA%E6%A0%BC/" rel="next" title="剑指offer题5——替换空格">
-                <i class="fa fa-chevron-left"></i> 剑指offer题5——替换空格
+              <a href="/2020/03/02/5.Bash%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E4%BB%8B%E7%BB%8D%EF%BC%88%E4%B8%8B%EF%BC%89/" rel="next" title="Bash基本语法介绍（下）">
+                <i class="fa fa-chevron-left"></i> Bash基本语法介绍（下）
               </a>
             
           </div>
@@ -388,10 +408,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/03/02/4.Linux%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E9%87%8D%E5%AE%9A%E5%90%91%E4%BB%A5%E5%8F%8A%E7%AE%A1%E9%81%93%EF%BC%88%E4%B8%8A%EF%BC%89/" rel="prev" title="Linux输入输出重定向以及管道（上）">
-                Linux输入输出重定向以及管道（上） <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -443,8 +459,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -504,6 +529,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP的可靠性保证机制"><span class="nav-number">1.</span> <span class="nav-text">TCP的可靠性保证机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X10-序列号、确认应答、超时重传"><span class="nav-number">1.2.</span> <span class="nav-text">0X10 序列号、确认应答、超时重传</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X11-窗口控制与高速重发控制-快速重传（重复确认应答）"><span class="nav-number">1.3.</span> <span class="nav-text">0X11 窗口控制与高速重发控制&#x2F;快速重传（重复确认应答）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X13-拥塞控制"><span class="nav-number">1.4.</span> <span class="nav-text">0X13 拥塞控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X14-流量控制"><span class="nav-number">1.5.</span> <span class="nav-text">0X14 流量控制</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
