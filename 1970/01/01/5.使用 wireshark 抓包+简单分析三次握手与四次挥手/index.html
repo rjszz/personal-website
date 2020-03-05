@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="使用 wireshark 抓包+简单分析三次握手与三次挥手0X 00 抓包神器wireshark   由于学习需要，最近开始接触网络知识 ，差不多学习到各种协议，什么TCP啊，UDP啊，HTTP一大堆的。说实话，一直听理论知识还会挺枯燥的，毕竟 所谓“纸上学来终觉浅，绝知此事要躬行” 古话还是没错的。   所以喽，那就试试呗，第一步当然要工具，总不能凭空抓包吧。   于是   说实话现在搜索工具就">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5.使用 wireshark 抓包+简单分析三次握手与四次挥手">
+<meta property="og:url" content="http://yoursite.com/1970/01/01/5.%E4%BD%BF%E7%94%A8%20wireshark%20%E6%8A%93%E5%8C%85+%E7%AE%80%E5%8D%95%E5%88%86%E6%9E%90%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%8E%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/index.html">
+<meta property="og:site_name" content="Rjszz Blog">
+<meta property="og:description" content="使用 wireshark 抓包+简单分析三次握手与三次挥手0X 00 抓包神器wireshark   由于学习需要，最近开始接触网络知识 ，差不多学习到各种协议，什么TCP啊，UDP啊，HTTP一大堆的。说实话，一直听理论知识还会挺枯燥的，毕竟 所谓“纸上学来终觉浅，绝知此事要躬行” 古话还是没错的。   所以喽，那就试试呗，第一步当然要工具，总不能凭空抓包吧。   于是   说实话现在搜索工具就">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200305204743105.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020030521114682.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200305211533785.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200305211911281.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020030521211334.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200305212331703.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200305212923468.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200305214128523.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200305214310529.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200305214742336.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/202003052151229.png">
+<meta property="article:published_time" content="1970-01-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-05T14:31:37.844Z">
+<meta property="article:author" content="Rjszz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200305204743105.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/1970/01/01/5.使用 wireshark 抓包+简单分析三次握手与四次挥手/"/>
+
+
+
+
+
+  <title>5.使用 wireshark 抓包+简单分析三次握手与四次挥手 | Rjszz Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+      <div class="site-meta-headline">
+        <a>
+          <img class="custom-logo-image" src="/images/avatar.ico"
+               alt="Rjszz Blog"/>
+        </a>
+      </div>
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rjszz Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Nothing is all</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/1970/01/01/5.%E4%BD%BF%E7%94%A8%20wireshark%20%E6%8A%93%E5%8C%85+%E7%AE%80%E5%8D%95%E5%88%86%E6%9E%90%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%8E%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rjszz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.ico">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rjszz Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">5.使用 wireshark 抓包+简单分析三次握手与四次挥手</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="1970-01-01T08:00:00+08:00">
+                1970-01-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="使用-wireshark-抓包-简单分析三次握手与三次挥手"><a href="#使用-wireshark-抓包-简单分析三次握手与三次挥手" class="headerlink" title="使用 wireshark 抓包+简单分析三次握手与三次挥手"></a>使用 wireshark 抓包+简单分析三次握手与三次挥手</h2><h4 id="0X-00-抓包神器wireshark"><a href="#0X-00-抓包神器wireshark" class="headerlink" title="0X 00 抓包神器wireshark"></a>0X 00 抓包神器wireshark</h4><p>   由于学习需要，最近开始接触网络知识 ，差不多学习到各种协议，什么TCP啊，UDP啊，HTTP一大堆的。说实话，一直听理论知识还会挺枯燥的，毕竟 所谓<strong>“纸上学来终觉浅，绝知此事要躬行”</strong> 古话还是没错的。<br>   所以喽，那就试试呗，第一步当然要工具，总不能凭空抓包吧。<br>   于是<br><img src="https://img-blog.csdnimg.cn/20200305204743105.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>   说实话现在搜索工具就是智能，你都还没问它就把答案给出来了。<br>   没错！今天的主角就是——wireshark</p>
+<p>   抓包神器，这样形容它绝对没错。为啥？</p>
+<blockquote>
+<p> 在过去，网络数据包分析软件是非常昂贵，或是专门属于营利用的软件，然而Wireshark的出现却改变了这种生态。                                                                                                                          ——维基百科</p>
+</blockquote>
+<p>   为啥，为啥Linux这么受欢迎？开源啊，免费啊，我们要追随各位大佬奉献社会的脚步(狗头)</p>
+<p>   那到底有啥用捏，那可就多了去了：</p>
+<blockquote>
+<p>找出在一个网络内发送数据包最多的主机、查看网络通信、查看某个主机使用了哪些程序、基本正常的网络通信、验证特有的网络操作、了解尝试连接无线网络的用户…….</p>
+</blockquote>
+<p>   一时半会还真列不完，这里有人总结了一下：<a href="https://blog.csdn.net/TLXX1126/article/details/75008774" target="_blank" rel="noopener">Wireshark的作用</a></p>
+<p>   总之，用它！用它！用它！</p>
+<p>  这里给上官网地址：<a href="https://www.wireshark.org/" target="_blank" rel="noopener">wireshark官网</a></p>
+<p>  windows、mac有相应的安装包，Linux可以直接指令安装</p>
+<p>Ubuntu:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install wireshark</span><br></pre></td></tr></table></figure>
+<p>Centos:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install wireshark</span><br></pre></td></tr></table></figure>
+<p>   后面的细节就不多少了。我们直接上主题了</p>
+<h4 id="0X-10-使用wireshark进行抓包"><a href="#0X-10-使用wireshark进行抓包" class="headerlink" title="0X 10 使用wireshark进行抓包"></a>0X 10 使用wireshark进行抓包</h4><p> <strong>1. 选择一个网口</strong><br>   打开软件你会看到这样的一个界面，上面的是一些不同网口，比如有无线的，有线的等等<br><img src="https://img-blog.csdnimg.cn/2020030521114682.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>   我们选择一个网口，比如我这里选择第一个，这是我的无线网络。双击，就会进入到一个抓包界面<br>   <img src="https://img-blog.csdnimg.cn/20200305211533785.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>   哎呀妈呀，一堆东西稀里哗啦的就出来了。不过不要慌！这些都是宝贵的数据，我们要的就是这些东西<br>   这些就是我们需要的数据包了。当然，这一下子这么多，也不是所有的都是我们所需要的。<br>   所以我们需要甄别</p>
+<p> <strong>2. 设定一些规则</strong><br>    我们可以看到这里有一栏，这里是给我们输入<strong>规则</strong>的，所谓的规则其实就是为了显示我们需要的信息<img src="https://img-blog.csdnimg.cn/20200305211911281.png" alt="在这里插入图片描述"></p>
+<p>   比如我们在里面输入<code>ip.addr == 103.228.211.105</code>，那么就会显示只与 ip 为<code>103.228.211.105</code>有关的包了。<img src="https://img-blog.csdnimg.cn/2020030521211334.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>   再比如我们输入<code>tcp</code>，那么就显示TCP协议的包<br>   <img src="https://img-blog.csdnimg.cn/20200305212331703.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>          （至于为啥还是为夹杂着一些http协议的包，我也不清楚，因为我也刚开始嘛，大家有兴趣可以去查一下 ）  </p>
+<p>   那到底可以制定那些规则呢？还是给篇博客，给有兴趣的同学去了解：<br>   <a href="https://blog.csdn.net/qq_21051503/article/details/81090117" target="_blank" rel="noopener">wireshark过滤规则及使用方法</a>       </p>
+<p> <strong>3. 查看包信息</strong><br>    我们把包抓下来是要查看的，查看的方法就是选中一条，然后信息就会出现在下面：<br>    <img src="https://img-blog.csdnimg.cn/20200305212923468.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>    这里会有包的所有信息，也就是说，如果没加密的话，网络中的所有信息都可以被窥探，是不是很危险，所以现在在搭理推广HTTPS，就是为了安全考虑的。<br>    我们在这不多说如何查看这些信息，只是告诉大家，这是就是我们分析信息的地方。</p>
+<h4 id="0X-20-简单分析三次握手与四次挥手"><a href="#0X-20-简单分析三次握手与四次挥手" class="headerlink" title="0X 20 简单分析三次握手与四次挥手"></a>0X 20 简单分析三次握手与四次挥手</h4><p>   好，上面工具会用了，现在我们需要来实践实践了。</p>
+<p>  开始我就说了，很多理论的东西很枯燥，但是动动手也许就会变得很有意思。</p>
+<p>   今天就来讲讲这TCP协议中的 <strong>三次握手和四次挥手</strong></p>
+<p>   怎么做呢？很简单，只需要3步：</p>
+<ol>
+<li><p>1、打开wireshark，开始抓包    </p>
+</li>
+<li><p>2、打开浏览器    </p>
+</li>
+<li><p>3、输入一个网址，按Enter，等到网页加载完后退出</p>
+<p>ok，整个过程数据包都给我们抓下来了～</p>
+</li>
+</ol>
+<p> <strong>1. 抓包</strong><br>   比如我这输入的是 <a href="http://www.163.com" target="_blank" rel="noopener">www.163.com</a><br><img src="https://img-blog.csdnimg.cn/20200305214128523.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>   等待加载完之后就退出，现在看我们的wireshark：<br>   <img src="https://img-blog.csdnimg.cn/20200305214310529.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>   已经把我们刚才整个过程的包都抓取了下来</p>
+<p> <strong>2. 筛选</strong><br>   但是太杂了不是，因为我们只是看握手和挥手过程，所以我们可以选取一个http网页的请求过程，这是要先建立TCP连接的，然后再断掉，所以这是很好的例子</p>
+<p>   我们在筛选条件里面写好<code>http</code> <img src="https://img-blog.csdnimg.cn/20200305214742336.png" alt="在这里插入图片描述"><br>     可以看到，现在出现的全是http协议的包。并且我们运气很好，因为第一条和第二条，刚好是一个请求一个响应(可以看到这两个前面都有小箭头，往右的表示出去的，也就是请求；往左的表示进来的，也就是响应)</p>
+<p>   这时候我们再去掉筛选条件，就可以看到整个完整的过程了：<br><img src="https://img-blog.csdnimg.cn/202003052151229.png" alt="在这里插入图片描述"><br>   好，终于到了最重要的一部分了。</p>
+<h5 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a><strong>三次握手</strong></h5><p>   从上图可以很清楚的看到，在HTTP的POST请求之前，有着明显的三次TCP请求(161、162、163记录)<br>   这就是我们所说的三次握手了</p>
+<p>   <strong>1、第一次握手</strong><br>      看到是从<code>448816-&gt;80</code> 也就是从客户端向web 服务器的80端口发数据包</p>
+<p>   这是客户端向服务器喊话：“服务器在嘛，我想要连接你请求一些东西”</p>
+<p>  <strong>2、第二次握手</strong><br>      可以看到是<code>80-&gt;448816</code>  这是服务器听到了客户端的请求，所以就回话了：<br>     “ 好，我可以听到，你说吧”</p>
+<p>  <strong>3、第三次握手</strong><br>        这次又变成了<code>448816-&gt;80</code>  因为客户端知道了服务器那边的准备好了，所以就准备发送了，但是在真正发之前，还要说一声，不让都不知道客户端啥时候发：<br>          “你准备好，我这就开始发数据了”</p>
+<p>   当服务器接受时候就知道了，前面都是客套话，后面就是正事了</p>
+<h5 id="数据请求与响应"><a href="#数据请求与响应" class="headerlink" title="数据请求与响应"></a><strong>数据请求与响应</strong></h5><p>   当客套话讲完之后，客户端就开始发请求了，也就是第4条，http请求。<br>   这是post请求，也就是进行数据提交</p>
+<p>   然后又出现了一次tcp连接，这是干什么呢？</p>
+<p>   可以看到是<code>80-&gt;448816</code>，也就服务器发送给客户端的。</p>
+<p>   其实这是web服务器得到消息后告诉客户端：<br>   “这事啊，好了好了，我知道了，你先等一下，等一下给你答复”</p>
+<p>   过了一下，web服务器就发送了一个http数据包，也将结果发给客户端了，这就是响应</p>
+<p>   客户端得到响应后，要告诉服务器一声：<br>   “好勒，谢谢～”<br>   也就是第7条的tcp通信</p>
+<h5 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a><strong>四次挥手</strong></h5><p>   我们这次的请求就这么简单(当然大多数时间不会这么简单)。现在事情干完了，该走了，但是又不能直接走吧，还是要说说客套话</p>
+<p>   <strong>1、第一次挥手</strong><br>       就是第8个包，看到的是<code>448816-&gt;80</code>(又是客户端开始的，真爱说客套话2333).</p>
+<p>   该走了，客户端就说：“好啦好啦，多谢老哥，我要这些就够了”<br>   这就是第一次挥手</p>
+<p>  <strong>2、第二次挥手</strong><br>      第九个包，<code>80-&gt;448816</code>，这是服务器得到消息之后回复给客户端<br>      “嗯嗯，知道了，那我不传了”<br>      这就是第二次挥手</p>
+<p>  <strong>3、第三次挥手</strong><br>     第十个包，<code>448816-&gt;80</code>，客户端这时候就该断开连接了。所以就对服务器说：<br>     “老哥，谢谢啦，那我走了吼”<br>     这就是第四次挥手</p>
+<p>  <strong>4、第四次挥手</strong><br>        第十一个包，<code>80-&gt;448816</code>，服务器知道了要回复客户端：<br>        “没事没事，去吧，下次再来”<br>        然后客户端就可以断开连接啦</p>
+<h4 id="0X-30-后言"><a href="#0X-30-后言" class="headerlink" title="0X 30 后言"></a>0X 30 后言</h4><p>这就是整个过程，虽然可能有点渲染了，但是大概还是符合的，如果大家还想深入了解，就好好的利用这个工具吧～</p>
+<p>神器在手，天下我有！</p>
+<p>今天就到这啦，大家下次见～</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/01/5.%E8%99%9A%E5%87%BD%E6%95%B0%E7%9A%84%E7%A5%9E%E5%A5%87%E6%95%88%E7%94%A8/" rel="prev" title="C++虚函数的神奇效用">
+                C++虚函数的神奇效用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.ico"
+                alt="Rjszz" />
+            
+              <p class="site-author-name" itemprop="name">Rjszz</p>
+              <p class="site-description motion-element" itemprop="description">给岁月以文明，给时光以生命</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-wireshark-抓包-简单分析三次握手与三次挥手"><span class="nav-number">1.</span> <span class="nav-text">使用 wireshark 抓包+简单分析三次握手与三次挥手</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#0X-00-抓包神器wireshark"><span class="nav-number">1.0.1.</span> <span class="nav-text">0X 00 抓包神器wireshark</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0X-10-使用wireshark进行抓包"><span class="nav-number">1.0.2.</span> <span class="nav-text">0X 10 使用wireshark进行抓包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0X-20-简单分析三次握手与四次挥手"><span class="nav-number">1.0.3.</span> <span class="nav-text">0X 20 简单分析三次握手与四次挥手</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#三次握手"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">三次握手</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据请求与响应"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">数据请求与响应</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#四次挥手"><span class="nav-number">1.0.3.3.</span> <span class="nav-text">四次挥手</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#0X-30-后言"><span class="nav-number">1.0.4.</span> <span class="nav-text">0X 30 后言</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rjszz</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+</body>
+</html>
