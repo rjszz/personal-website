@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="世无C++,万古长如夜,Network for you and me, sharing everyone!," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="0X00 什么是Socket通信   我们知道，在网络编程中，socket通信是入门级编程。就像是你学一门语言，就先用这门语言写出Hello World。所以我们今天就先写出这Hello World。    Socket通信，也就是我们所说的套接字，这是进程间的一种通信方式，但与其它通信方式不一样的是，套接字可以通过网络进行传输。    我们知道的是，Socket通信是一种通信。通信通信，总该有两">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux下使用C++面向对象实现socket通信">
+<meta property="og:url" content="http://yoursite.com/2020/03/10/3.Linux%E4%B8%8B%E4%BD%BF%E7%94%A8C-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%AE%9E%E7%8E%B0socket%E9%80%9A%E4%BF%A1/index.html">
+<meta property="og:site_name" content="Rjszz Blog">
+<meta property="og:description" content="0X00 什么是Socket通信   我们知道，在网络编程中，socket通信是入门级编程。就像是你学一门语言，就先用这门语言写出Hello World。所以我们今天就先写出这Hello World。    Socket通信，也就是我们所说的套接字，这是进程间的一种通信方式，但与其它通信方式不一样的是，套接字可以通过网络进行传输。    我们知道的是，Socket通信是一种通信。通信通信，总该有两">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020031023161576.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020031023165969.png">
+<meta property="article:published_time" content="2020-03-10T15:22:50.000Z">
+<meta property="article:modified_time" content="2020-03-10T15:25:16.565Z">
+<meta property="article:author" content="Rjszz">
+<meta property="article:tag" content="世无C++,万古长如夜">
+<meta property="article:tag" content="Network for you and me, sharing everyone!">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/2020031023161576.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/10/3.Linux下使用C-面向对象实现socket通信/"/>
+
+
+
+
+
+  <title>Linux下使用C++面向对象实现socket通信 | Rjszz Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+      <div class="site-meta-headline">
+        <a>
+          <img class="custom-logo-image" src="/images/avatar.ico"
+               alt="Rjszz Blog"/>
+        </a>
+      </div>
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rjszz Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Nothing is all</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/10/3.Linux%E4%B8%8B%E4%BD%BF%E7%94%A8C-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%AE%9E%E7%8E%B0socket%E9%80%9A%E4%BF%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rjszz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.ico">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rjszz Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux下使用C++面向对象实现socket通信</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-10T23:22:50+08:00">
+                2020-03-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="0X00-什么是Socket通信"><a href="#0X00-什么是Socket通信" class="headerlink" title="0X00 什么是Socket通信"></a>0X00 什么是Socket通信</h2><p>   我们知道，在网络编程中，socket通信是入门级编程。就像是你学一门语言，就先用这门语言写出<code>Hello World</code>。所以我们今天就先写出这<code>Hello World</code>。</p>
+<p>   Socket通信，也就是我们所说的<code>套接字</code>，这是进程间的一种通信方式，但与其它通信方式不一样的是，套接字可以通过网络进行传输。</p>
+<p>   我们知道的是，Socket通信是一种通信。通信通信，总该有两个对象才能进行相互的通信，才能叫通信。而在Socket通信中，这两端就是：<code>Server(服务器)</code> 和 <code>Client(客户端)</code></p>
+<p>   所以要实现socket通信，就是要解决这两端的编码</p>
+<h2 id="0X10-怎么进行Socket通信"><a href="#0X10-怎么进行Socket通信" class="headerlink" title="0X10 怎么进行Socket通信"></a>0X10 怎么进行Socket通信</h2><p>   我们刚才说了，我们需要对两端进行编码。因此，要知道怎么通信，就得分开来讲</p>
+<p> <strong>1. Server端</strong><br>     对于服务器端，我们需要进行一下三部操作</p>
+<p>   第一步，先对Socket进行初始化，定义相应的协议与类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">listenfd = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>   第二步，绑定响应的IP与Port端口：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bind(listenfd, (struct sockaddr*)&amp;servaddr, <span class="keyword">sizeof</span>(servaddr))</span><br></pre></td></tr></table></figure>
+
+<p>   第三步，监听：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">listen(listenfd, maxsize)</span><br></pre></td></tr></table></figure>
+
+<p>   通过这三步，相当于服务器就开始工作了，端口有数据来时，就可以捕捉，这样我们就得到了来自客户端的数据。</p>
+<p>   这就是Server端的工作</p>
+<p> <strong>2. Client端</strong></p>
+<p>   客户端相对于服务器端就简单一点</p>
+<p>   首先也是对Socket进行初始化，也就是创建一个套接字</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sockfd = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>   然后输入服务器的IP地址，再连接(connet)，就可以进行相应的通信了：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connect(sockfd, (struct sockaddr*)&amp;servaddr, <span class="keyword">sizeof</span>(servaddr))</span><br></pre></td></tr></table></figure>
+
+<h2 id="0X20-类的设计"><a href="#0X20-类的设计" class="headerlink" title="0X20 类的设计"></a>0X20 类的设计</h2><p>   我们这里是面向对象的编程，因为，我们需要设计相对应的类。</p>
+<p>   在这里我们很明确，只要设计两个类即可：<code>Server</code>  以及  <code>Client</code></p>
+<p> <strong>1. Server 类</strong></p>
+<pre><code>首先，我们需要想清楚，server类中需要什么？</code></pre><p>   <strong>私有成员：</strong></p>
+<p>   我们刚才看到了前面的代码中有<code>listenfd</code> 这个变量，他是在创建套接字是返回的值,因为在Linux中万物皆文件，因此套接字也是一个文件。<br>    因此在调用socket()函数数调用成功后，会返回一个标识这个套接字的文件描述符，失败的时候返回-1(关于socket函数，可以看<a href="https://blog.csdn.net/mayue_web/article/details/88913267" target="_blank" rel="noopener">这里</a>)<br>    因此我们需要一个 <code>listenfd</code> 作为私有成员变量</p>
+<p>   还有后面我们需要用到的一个<code>connfd</code>变量，他是<code>accept</code> 函数调用成功后的返回值，和之前<code>listenfd</code> 一样，也是一个文件描述符。</p>
+<p>   要进行socket通信，还有就是一个很重要的变量就是 <code>sockaddr_in</code> 类型的变量，<code>sockaddr_in</code>是用来处理网络通信的地址</p>
+<p>   我们还需要一个 char* buff 来存储通信的信息，作为缓存区</p>
+<p>   当然，还需要port来存储我们用来进行通信的端口，以及存储最大连接数的 maxsize</p>
+<p>   私有成员差不多就这样了</p>
+<p>  <strong>公共成员：</strong><br>    公共成员中更多的是向外界提供的接口，也就是函数。</p>
+<p>   通过以上的分析，我们知道服务器最关键的三步，因此我们需要封装这三步操作，分别是：<code>Socket</code>()  <code>Bind()</code>   <code>Listen()</code></p>
+<p>   然后我们再用一个<code>start()</code>函数来封装这三种操作</p>
+<p>   现在我们只是建立好了连接，准备通信，因此我们需要一个<code>Handle()</code>函数，其中封装了我们需要的操作</p>
+<p>   最后，需要关闭连接，也就是<code>end()</code>函数</p>
+<p>好了，分析就差不多了，下面是完整的代码：</p>
+<p> server.h</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span>   SERVER_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span>   SERVER_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"unified.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Server</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="keyword">int</span> listenfd;</span><br><span class="line">        <span class="keyword">int</span> connfd;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span>  <span class="title">servaddr</span>;</span></span><br><span class="line">        <span class="keyword">char</span>*  buff;</span><br><span class="line">        <span class="keyword">int</span> port;</span><br><span class="line">        <span class="keyword">int</span> maxsize;</span><br><span class="line">    </span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Error</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>*)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        Server(<span class="keyword">int</span> Po=<span class="number">8000</span>,<span class="keyword">int</span> Size=<span class="number">50</span>):port(Po),maxsize(Size)&#123;buff = <span class="keyword">new</span> <span class="keyword">char</span>[MAXLINE];&#125;;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Socket</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Bind</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Listen</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Handle</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">start</span><span class="params">()</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">stop</span><span class="params">()</span></span>&#123;close(listenfd);&#125;;</span><br><span class="line"></span><br><span class="line">        ~Server()&#123;<span class="keyword">delete</span> [] buff;&#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+
+<p> <strong>2. Client 类</strong><br>       知道了上面Server类的设计之后，Client的设计就差不多啦，这里就直接给代码了：</p>
+<p>client.h</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span>   CLIENT_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span>   CLIENT_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"unified.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Client</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="keyword">int</span> sockfd;</span><br><span class="line">        <span class="keyword">char</span>* sendline;	<span class="comment">//发送的内容</span></span><br><span class="line">        <span class="keyword">char</span>* ip;</span><br><span class="line">        <span class="keyword">int</span> port;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span>  <span class="title">servaddr</span>;</span></span><br><span class="line"></span><br><span class="line">         <span class="function"><span class="keyword">void</span> <span class="title">Error</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>*)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        Client(<span class="keyword">char</span>* IP,<span class="keyword">int</span> Po=<span class="number">8000</span>):ip(IP),port(Po)</span><br><span class="line">        &#123;</span><br><span class="line">            sendline = <span class="keyword">new</span> <span class="keyword">char</span> [MAXLINE];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Socket</span><span class="params">()</span></span>;	<span class="comment">//建立socket</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Connet</span><span class="params">()</span></span>;	<span class="comment">//连接</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">handle</span><span class="params">()</span></span>;	<span class="comment">//处理</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">start</span><span class="params">()</span></span>;	<span class="comment">//启动</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">stop</span><span class="params">()</span></span>&#123;close(sockfd);&#125;</span><br><span class="line"></span><br><span class="line">        ~Client()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">delete</span> [] sendline;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="0X30-类的实现"><a href="#0X30-类的实现" class="headerlink" title="0X30 类的实现"></a>0X30 类的实现</h2><p>   可能到了现在，大家还是比较懵的，因为只有类的定义，没有实现，还是不知道怎么做</p>
+<p>   现在我们看这些关键的实现，为了看起来简洁，因此直接在代码上注释了</p>
+<p>——————————分———————————————割———————————————线————————<br>server.cc</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"server.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Server::Error</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* message)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(message,strerror(errno),errno);</span><br><span class="line">     <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Server::Socket</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( (listenfd = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>)) == <span class="number">-1</span> )	<span class="comment">//初始化套接字，AF_INET表示协议族，SOCK_STREAM是采用TCP协议</span></span><br><span class="line">        Error(<span class="string">"create socket error: %s(errno: %d)\n"</span>);<span class="comment">// 返回值==-1，报错</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">memset</span>(&amp;servaddr, <span class="number">0</span>, <span class="keyword">sizeof</span>(servaddr));<span class="comment">//将servaddr结构体的内容置0</span></span><br><span class="line">    servaddr.sin_family = AF_INET;<span class="comment">//规定协议族为SOCK_STREAM</span></span><br><span class="line">    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);<span class="comment">//这里表示的是需要监听的IP地址，也就是接受哪些IP发过来的数据包，INADDR_ANY任意，即0.0.0.0  如果是本地通信，那么就是127.0.0.1</span></span><br><span class="line">    servaddr.sin_port = htons(port); <span class="comment">//绑定端口</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Server::Bind</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="keyword">if</span>( bind(listenfd, (struct sockaddr*)&amp;servaddr, <span class="keyword">sizeof</span>(servaddr)) == <span class="number">-1</span>) <span class="comment">//参数分别是之前的文件描述符，网络通信地址及其大小</span></span><br><span class="line">            Error(<span class="string">"bind socket error: %s(errno: %d)\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Server::Listen</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>( listen(listenfd, maxsize) == <span class="number">-1</span>)<span class="comment">//文件描述符以及最大连接数</span></span><br><span class="line">         Error(<span class="string">"listen socket error: %s(errno: %d)\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Server::Handle</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">"======waiting for client's request======\n"</span>);</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>( (connfd = accept(listenfd, (struct sockaddr*)<span class="literal">NULL</span>, <span class="literal">NULL</span>)) == <span class="number">-1</span>)&#123;	<span class="comment">//accept用来接受端口发来的数据，connfd文件描述符</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"accept socket error: %s(errno: %d)"</span>,strerror(errno),errno);</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> n = recv(connfd, buff, MAXLINE, <span class="number">0</span>);	<span class="comment">//将接收到的数据放入buff中</span></span><br><span class="line">        buff[n] = <span class="string">'\0'</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"recv msg from client: %s\n"</span>, buff);</span><br><span class="line">        close(connfd);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Server::start</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Socket();</span><br><span class="line">    Bind();</span><br><span class="line">    Listen();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>——————————分———————————————割———————————————线————————<br>client.cc</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"client.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Client::Error</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* message)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(message,strerror(errno),errno);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Client::Socket</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="keyword">if</span>( (sockfd = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>)) &lt; <span class="number">0</span>) <span class="comment">//初始化套接字，AF_INET表示协议族，SOCK_STREAM是采用TCP协议</span></span><br><span class="line">        Error(<span class="string">"create socket error: %s(errno: %d)\n"</span>);<span class="comment">// 返回值小于0，报错</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">memset</span>(&amp;servaddr, <span class="number">0</span>, <span class="keyword">sizeof</span>(servaddr));	<span class="comment">//将servaddr结构体的内容置0</span></span><br><span class="line">    servaddr.sin_family = AF_INET;	<span class="comment">//规定协议族为SOCK_STREAM</span></span><br><span class="line">    servaddr.sin_port = htons(port);<span class="comment">//绑定端口</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Client::Connet</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"ip:%s\n"</span>,ip);</span><br><span class="line">     <span class="keyword">if</span>( inet_pton(AF_INET, ip, &amp;servaddr.sin_addr) &lt;= <span class="number">0</span>) <span class="comment">//ip转化函数，将ip转化后赋值给servaddr.sin_addr</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"inet_pton error for %s\n"</span>,ip);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"port:%d\n"</span>,port);</span><br><span class="line">     <span class="keyword">if</span>(connect(sockfd, (struct sockaddr*)&amp;servaddr, <span class="keyword">sizeof</span>(servaddr)) &lt; <span class="number">0</span>)	<span class="comment">//用connet函数进行连接</span></span><br><span class="line">        Error(<span class="string">"connect error: %s(errno: %d)\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Client::handle</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"send msg to server: \n"</span>);</span><br><span class="line">    fgets(sendline, MAXLINE, <span class="built_in">stdin</span>);<span class="comment">//从屏幕输入</span></span><br><span class="line">    <span class="keyword">if</span>( send(sockfd, sendline, <span class="built_in">strlen</span>(sendline), <span class="number">0</span>) &lt; <span class="number">0</span>)	<span class="comment">//使用send发送</span></span><br><span class="line">        Error(<span class="string">"send msg error: %s(errno: %d)\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Client::start</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Socket();</span><br><span class="line">    Connet();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="0X40-Demo"><a href="#0X40-Demo" class="headerlink" title="0X40 Demo"></a>0X40 Demo</h2><p>   类设计好了，我们现在用一个Demo来测试一下：</p>
+<p>Server.cc</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"server.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Server* ser=<span class="keyword">new</span> Server();</span><br><span class="line">    ser-&gt;start();</span><br><span class="line">    ser-&gt;Handle();</span><br><span class="line">    ser-&gt;stop();</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Client.cc</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"client.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( argc != <span class="number">2</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"usage: ./client &lt;ipaddress&gt;\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    Client* cli= <span class="keyword">new</span> Client(argv[<span class="number">1</span>]);</span><br><span class="line">    cli-&gt;start();</span><br><span class="line">    cli-&gt;handle();</span><br><span class="line">    cli-&gt;stop();</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>makefile</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">all:server client clean</span><br><span class="line"></span><br><span class="line">server:Server.o server.o</span><br><span class="line">	g++ -g -o server Server.o server.o</span><br><span class="line">client:Client.o client.o</span><br><span class="line">	g++ -g -o client Client.o client.o</span><br><span class="line">Server.o:Server.cc</span><br><span class="line">	g++ -g -c Server.cc</span><br><span class="line">Client.o:Client.cc</span><br><span class="line">	g++ -g -c Client.cc</span><br><span class="line">server.o:server.cc</span><br><span class="line">	g++ -g -c server.cc</span><br><span class="line">client.o:client.cc</span><br><span class="line">	g++ -g -c client.cc</span><br><span class="line"></span><br><span class="line">clean:</span><br><span class="line">	rm  server.o</span><br><span class="line">	rm Server.o</span><br><span class="line">	rm client.o</span><br><span class="line">	rm Client.o</span><br></pre></td></tr></table></figure>
+
+<p>使用：<br>make一下<br>先使用<code>./server</code>来运行服务器端(可以放在本地，也可以放在服务器)<br>在使用<code>./![client](https://img-blog.csdnimg.cn/20200310231537335.png) &lt;ip address&gt;</code>运行客户端,其中后面的<ip address>是ip地址，本地请填写<code>127.0.0.1</code></p>
+<p>运行client之后会提示你输入，我们输入Hello World<br><img src="https://img-blog.csdnimg.cn/2020031023161576.png" alt="在这里插入图片描述"><br>之后就会在服务器端显示：<br><img src="https://img-blog.csdnimg.cn/2020031023165969.png" alt="在这里插入图片描述"></p>
+<h2 id="0X50-后言"><a href="#0X50-后言" class="headerlink" title="0X50 后言"></a>0X50 后言</h2><p>   好啦，这个最基本的面向对象的socket通信就完成啦</p>
+<p>  工程放 github 啦，希望大家多多支持～     </p>
+<p><a href="https://github.com/rjszz/socket_communication" target="_blank" rel="noopener">C++  socket通信编程</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E4%B8%96%E6%97%A0C-%E4%B8%87%E5%8F%A4%E9%95%BF%E5%A6%82%E5%A4%9C/" rel="tag"># 世无C++,万古长如夜</a>
+          
+            <a href="/tags/Network-for-you-and-me-sharing-everyone/" rel="tag"># Network for you and me, sharing everyone!</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/07/13.C++%E4%B8%BB%E8%BF%9B%E7%A8%8B%E7%AD%89%E5%BE%85%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9A%84%E9%97%AE%E9%A2%98%E4%BB%A5%E5%8F%8A%E8%A7%A3%E5%86%B3/" rel="next" title="C++主进程等待子线程的问题以及解决">
+                <i class="fa fa-chevron-left"></i> C++主进程等待子线程的问题以及解决
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.ico"
+                alt="Rjszz" />
+            
+              <p class="site-author-name" itemprop="name">Rjszz</p>
+              <p class="site-description motion-element" itemprop="description">给岁月以文明，给时光以生命</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0X00-什么是Socket通信"><span class="nav-number">1.</span> <span class="nav-text">0X00 什么是Socket通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X10-怎么进行Socket通信"><span class="nav-number">2.</span> <span class="nav-text">0X10 怎么进行Socket通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X20-类的设计"><span class="nav-number">3.</span> <span class="nav-text">0X20 类的设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X30-类的实现"><span class="nav-number">4.</span> <span class="nav-text">0X30 类的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X40-Demo"><span class="nav-number">5.</span> <span class="nav-text">0X40 Demo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X50-后言"><span class="nav-number">6.</span> <span class="nav-text">0X50 后言</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rjszz</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+</body>
+</html>
