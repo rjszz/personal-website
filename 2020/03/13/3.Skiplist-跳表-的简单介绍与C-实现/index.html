@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-32x32.ico?v=5.1.4">
+
+
+
+
+
+
+  <meta name="keywords" content="程序=数据结构+算法," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="0X 00 前言   前几天在看Redis的时候，看到网上说，Redis采用的是 Skiplist 而不是红黑树，但当时就给我整懵了。    啥子东西叫Skiplist，一查，翻译还挺直白——跳表。看起来很高级啊，于是嗖嗖嗖马上查资料 0X 10 Skiplist的设计初衷   在看到Skiplist庐山真面目之前，我们先来了解它是怎么出现的，或者说为何要出现    链表想必大家都熟悉，一般来讲，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Skiplist(跳表)的简单介绍与C++实现">
+<meta property="og:url" content="http://yoursite.com/2020/03/13/3.Skiplist-%E8%B7%B3%E8%A1%A8-%E7%9A%84%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D%E4%B8%8EC-%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Rjszz Blog">
+<meta property="og:description" content="0X 00 前言   前几天在看Redis的时候，看到网上说，Redis采用的是 Skiplist 而不是红黑树，但当时就给我整懵了。    啥子东西叫Skiplist，一查，翻译还挺直白——跳表。看起来很高级啊，于是嗖嗖嗖马上查资料 0X 10 Skiplist的设计初衷   在看到Skiplist庐山真面目之前，我们先来了解它是怎么出现的，或者说为何要出现    链表想必大家都熟悉，一般来讲，">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200313162628437.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200313164511451.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200313171624520.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200313173246205.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2020-03-13T09:58:46.000Z">
+<meta property="article:modified_time" content="2020-03-13T10:01:14.713Z">
+<meta property="article:author" content="Rjszz">
+<meta property="article:tag" content="程序&#x3D;数据结构+算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200313162628437.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/03/13/3.Skiplist-跳表-的简单介绍与C-实现/"/>
+
+
+
+
+
+  <title>Skiplist(跳表)的简单介绍与C++实现 | Rjszz Blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+      <div class="site-meta-headline">
+        <a>
+          <img class="custom-logo-image" src="/images/avatar.ico"
+               alt="Rjszz Blog"/>
+        </a>
+      </div>
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rjszz Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Nothing is all</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/13/3.Skiplist-%E8%B7%B3%E8%A1%A8-%E7%9A%84%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D%E4%B8%8EC-%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rjszz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.ico">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rjszz Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Skiplist(跳表)的简单介绍与C++实现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-13T17:58:46+08:00">
+                2020-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="0X-00-前言"><a href="#0X-00-前言" class="headerlink" title="0X 00 前言"></a>0X 00 前言</h2><p>   前几天在看Redis的时候，看到网上说，Redis采用的是 <code>Skiplist</code> 而不是红黑树，但当时就给我整懵了。</p>
+<p>   啥子东西叫Skiplist，一查，翻译还挺直白——跳表。看起来很高级啊，于是嗖嗖嗖马上查资料</p>
+<h2 id="0X-10-Skiplist的设计初衷"><a href="#0X-10-Skiplist的设计初衷" class="headerlink" title="0X 10 Skiplist的设计初衷"></a>0X 10 Skiplist的设计初衷</h2><p>   在看到Skiplist庐山真面目之前，我们先来了解它是怎么出现的，或者说为何要出现</p>
+<p>   链表想必大家都熟悉，一般来讲，它长这样：<br>   <img src="https://img-blog.csdnimg.cn/20200313162628437.png" alt="在这里插入图片描述"><br>   上面是一个有序链表，我们知道链表有一个好处就是在删除和插入的时候很方便。</p>
+<p>   但是，美中不足的就是，查询是它的一个软肋。</p>
+<p>   因为我们在链表中查找，只能从头开始一个一个往下找，所以一般来讲，链表的查找效率是 <strong>O(n)</strong></p>
+<p>  所以基于这一点，有大神就开始打算盘了。如何很将链表的便捷与数组的查找优势(说的是<strong>有序数组下的二分查找</strong>)结合起来？</p>
+<p>  于是，于是，神奇的<strong>跳表</strong>就出来了(大神不愧是大神，分分钟出来:)    )</p>
+<h2 id="0X-20-Skiplist的真面目"><a href="#0X-20-Skiplist的真面目" class="headerlink" title="0X 20 Skiplist的真面目"></a>0X 20 Skiplist的真面目</h2><p>   上面的想法很好啊，但是是不是很难实现呢？ </p>
+<p>   只能说只有我们想不到，没有大神做不到</p>
+<p>   跳表跳表，最主要的就是在一个<code>跳</code>字上面，那么靠什么来跳呢——<code>索引</code>，说白了就是<code>指针</code></p>
+<p>   好嘛，也是以空间换效率(要不然捏，大神可不是真神仙，能凭空变出来)</p>
+<p>   好了，铺垫差不多了，也该“千呼万唤始出来”了</p>
+<p>   上图！<br><img src="https://img-blog.csdnimg.cn/20200313164511451.png" alt="在这里插入图片描述"><br>   （是不是看起来很眼熟，没错，没准你们数据结构老师上课讲过！）</p>
+<p>   看起来挺古怪的啊，不过人家搜索起来可是杠杠的</p>
+<p><strong>来个例子</strong><br>   假设我们需要查找<code>25</code>，如果是一般的有序链表我们需要比较几次呢？没做，9次，25前面的全要遍历一遍</p>
+<p>  那么采用跳表呢，怎么搜索，又要多少次呢？</p>
+<p>  敲黑板，重点来了！</p>
+<p>  来我们开始</p>
+<ul>
+<li><p>1、将当前指针<code>curr</code>指向头结点，然后查看最上面的指针指向的节点——<code>21</code>，第一次比较，21比25小，于是当前curr指向<code>21</code>这个节点</p>
+</li>
+<li><p>2、故技重施，再看<code>21</code>的第一个最上面的指针，指向NULL，说明到头了，不行，第二次比较</p>
+</li>
+<li><p>3、这时候，往下移一层，还是指向NULL，再移，第三次比较</p>
+</li>
+<li><p>4、第二层(从下往上数)指向的是<code>26</code>这个节点，第四次比较，比<code>25</code>大，说明还是要往下走</p>
+</li>
+<li><p>5、到了最后一层，这时候是就是，不是就不是了，于是进行第5次比较，25找到了</p>
+<p>怎么样，从开始的9次变成了5次，差不过快了一半了吧</p>
+</li>
+</ul>
+<h2 id="0X-30-Skiplist的庐山真面目"><a href="#0X-30-Skiplist的庐山真面目" class="headerlink" title="0X 30 Skiplist的庐山真面目"></a>0X 30 Skiplist的庐山真面目</h2><p>   刚才我们也看到了，跳表还是很有用的。但是，其实刚才我们看到的跳表，并不是真正的跳表，为什么呢？</p>
+<p>  如果你认真观察的话，你会发现，上面的跳表有着严格的规定：<strong>上面一层的节点个数是下面一层个数的1/2</strong></p>
+<p>  这样还是很有问题，比如当你插入一个节点的时候，那么结构不就破坏了？或者是又要用一定的办法来更改从而维持这样的结构。这样就和红黑树差不多了啊</p>
+<p>   大神的解决办法是什么呢？那就是不要”规定“，当然我们所的是不要上面那种严格的规定，而规则变成了一种随机</p>
+<blockquote>
+<p>   上下层不强制要求 1:2 ，一个节点要不要被索引，建几层的索引，都在节点插入时由抛硬币决定</p>
+</blockquote>
+<p>  当然，虽然索引的节点、索引的层数是随机的，为了保证搜索的效率，要大致保证每层的节点数目与上节的结构相当，因此随机出现的真正意义上的跳表是这样的：<br>  <img src="https://img-blog.csdnimg.cn/20200313171624520.png" alt="在这里插入图片描述"><br>   发现比例已经不是严格的 1:2 了，但是总体来看还是比较规整的</p>
+<p>  下面是节点 17 插入的过程<img src="https://img-blog.csdnimg.cn/20200313173246205.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3Jqc3p6MTMxNA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>   性能分析就不做啦(因为我不会2333)，但是需要记住的是，跳表的   插入/删除/查找  都是 <strong>O(logn)</strong></p>
+<h2 id="0X-30-硬核编码——Skiplist的C-实现"><a href="#0X-30-硬核编码——Skiplist的C-实现" class="headerlink" title="0X 30 硬核编码——Skiplist的C++实现"></a>0X 30 硬核编码——Skiplist的C++实现</h2><p>   PS：以下代码99.99% 为copy(当然不是直接copy，是自己的一点点对着代码码上去的，然后加了点注释)，但是希望大家能好好学习，自己敲一遍消化一下<br>   可能敲的过程中有所纰漏，所以请大家多多留心！(后面会有代码出处链接)</p>
+<p>skiplist.h</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _SKIPLSIT_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _SKIPLSIT_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> K,<span class="keyword">typename</span> V,<span class="keyword">int</span> MAXLEVEL&gt;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">skiplist_node</span>	// 跳表的节点类 </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    K key;</span><br><span class="line">    V value;</span><br><span class="line">    skiplist_node&lt;K,V,MAXLEVEL&gt;* forwards;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    skiplist_node()</span><br><span class="line">    &#123;</span><br><span class="line">        forwards=<span class="keyword">new</span> skiplist_node&lt;K,V,MAXLEVEL&gt; [MAXLEVEL];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;MAXLEVEL;i++)</span><br><span class="line">            forwards[i]=<span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    skiplist_node(K searchKey):key(searchKey)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;MAXLEVEL;i++)</span><br><span class="line">            forwards[i]=<span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~skiplist_node()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">delete</span> [] forwards;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> K,<span class="keyword">typename</span> V,MAXLEVEL=<span class="number">16</span>&gt;</span><br><span class="line">class skiplist	<span class="comment">//跳表类</span></span><br><span class="line">&#123;     </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">protected</span>:</span><br><span class="line">        K m_minKey;	<span class="comment">//最小键值</span></span><br><span class="line">        K m_maxKey;	<span class="comment">//最大键值</span></span><br><span class="line">        <span class="keyword">int</span> man_curr_level;	<span class="comment">//当前最大层数</span></span><br><span class="line">        skiplist_node&lt;K,V,MAXLEVEL&gt;* m_pHeader;	<span class="comment">//头指针</span></span><br><span class="line">        skiplist_node&lt;K,V,MAXLEVEL&gt;* m_pTail;	<span class="comment">//尾指针</span></span><br><span class="line">        <span class="function"><span class="keyword">double</span> <span class="title">uniformRandom</span><span class="params">()</span></span>;	<span class="comment">//随机函数</span></span><br><span class="line">        <span class="function"><span class="keyword">int</span> <span class="title">randomLevel</span><span class="params">()</span></span>;	<span class="comment">//生成随机层数</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    	<span class="comment">//别名</span></span><br><span class="line">        <span class="keyword">typedef</span> K KeyType;</span><br><span class="line">        <span class="keyword">typedef</span> V ValueType;</span><br><span class="line">        <span class="keyword">typedef</span> skiplist_node&lt;K,V,MAXLEVEL&gt; NodeType;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">int</span> max_level;	<span class="comment">//最大层数</span></span><br><span class="line"></span><br><span class="line">        skiplist(K minKey,K maxKey);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">virtual</span> ~skiplist_node();</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(K searchKey,V newValue)</span></span>; <span class="comment">//插入</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">erase</span><span class="params">(K searchKey)</span></span>;	<span class="comment">//删除</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">const</span> NodeType* <span class="title">find</span><span class="params">(K searchKey)</span></span>;	<span class="comment">//查找</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span></span>;	<span class="comment">//判断是否为空</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="built_in">std</span>::<span class="built_in">string</span> <span class="title">printList</span><span class="params">()</span></span>;	<span class="comment">//打印</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>skiplist.cc</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdlib.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">skiplist::uniformRandom</span><span class="params">()</span>	<span class="comment">//随机函数</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> rand()/<span class="keyword">double</span>(RAND_MAX);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">skiplist::randomLevel</span><span class="params">()</span>	<span class="comment">//生成随机层数</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> level=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">double</span> p=<span class="number">0.5</span>;</span><br><span class="line">    <span class="keyword">while</span>(uniformRandom()&lt;p &amp;&amp; level &lt; MAXLEVEL)</span><br><span class="line">                level++;</span><br><span class="line">    <span class="keyword">return</span> level;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">skiplist::skiplist(K minKey,K maxKey):m_pHeader(<span class="literal">NULL</span>),m_pTail(<span class="literal">NULL</span>),	<span class="comment">//构造函数</span></span><br><span class="line">                                max_curr_level(<span class="number">1</span>),max_level(MAXLEVEL),</span><br><span class="line">                                m_minKey(minKey),m_maxKey(maxKey)</span><br><span class="line">&#123;</span><br><span class="line">        m_pHeader = <span class="keyword">new</span> NdoeType(m_minKey);</span><br><span class="line">        m_pTail = <span class="keyword">new</span> NodeType(m_maxKey);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;MAXLEVEL;i++)</span><br><span class="line">            m_pHeader-&gt;forwards[i]=m_pTail;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">skiplist::~sikplist()	<span class="comment">//析构函数</span></span><br><span class="line">&#123;</span><br><span class="line">        NodeType* currNode =m_pHeader-&gt;forwards[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">while</span>(currNode != m_pTail)</span><br><span class="line">        &#123;</span><br><span class="line">            NodeType* tempNode = currNode;</span><br><span class="line">            currNode = currNode-&gt;forwards[<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">delete</span> tempNode;      </span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">delete</span> m_pHeader;</span><br><span class="line">         <span class="keyword">delete</span> m_pTail;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">skiplist::insert</span><span class="params">(K searchKey,V newValue)</span>	<span class="comment">//插入函数</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        skiplist_node&lt;K,V,MAXLEVEL&gt;* update[MAXKLEVEL];</span><br><span class="line">        NodeType* currNode= m_pHear;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> level=max_curr_level<span class="number">-1</span>; level&gt;=<span class="number">0</span>; level--)  <span class="comment">//这个循环用来查找待插入的位置</span></span><br><span class="line">        &#123;	<span class="comment">//若第level指向的小于 待查找(searchKey) 的值,则在本层一直往下走</span></span><br><span class="line">                <span class="keyword">while</span> (currNdoe-&gt;forwards[level]-&gt;key&lt;searchKey)	</span><br><span class="line">                        currNode = currNode-&gt;forwards[level];</span><br><span class="line">                <span class="comment">//否则，到下一层</span></span><br><span class="line">                update[level] = currNode;	<span class="comment">//存储走过的路径</span></span><br><span class="line">        &#125;</span><br><span class="line">        currNode = currNode-&gt;forwards[<span class="number">0</span>];	<span class="comment">//此时便是待插入的位置</span></span><br><span class="line">        <span class="keyword">if</span>(currNode-&gt;key == searchKey)	<span class="comment">//若键值 key 相同</span></span><br><span class="line">                    currNode-&gt;value = newValue;	<span class="comment">//更新值</span></span><br><span class="line">        <span class="keyword">else</span>	<span class="comment">//否则进行插入</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> newlevel = randmoLevel();	<span class="comment">//或者随机层数</span></span><br><span class="line">            <span class="keyword">if</span>(newlevel &gt; max_curr_level)	<span class="comment">//大于当前最大层数，则需要更新</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> level = max_curr_level; level &lt; newlevel; level++)</span><br><span class="line">                    upadte[level]=m_pHeader;</span><br><span class="line">                </span><br><span class="line">                max_curr_level=newlevel;</span><br><span class="line">            &#125;</span><br><span class="line">            currNode=<span class="keyword">new</span> NodeType(searchKey,newValue);	</span><br><span class="line">            <span class="comment">//更新指针的指向，比新节点高的则指向updata后面的，比新节点低的则将updata指向新节点</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> lv=<span class="number">0</span>;lv&lt;max_curr_level;lv++)	</span><br><span class="line">            &#123;</span><br><span class="line">                    currNode-&gt;forwards[lv]=update[lv]-&gt;forwards[lv];</span><br><span class="line">                    update[lv]-&gt;forwards[lv]=currNode;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;   </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">listskip::erase</span><span class="params">(K searchKey)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        skiplist_node&lt;K,V,MAXLEVEL&gt;* update[MAXLEVEL];</span><br><span class="line">        NodeType* currNode = mpHeader;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> level=max_curr_level<span class="number">-1</span>; level&gt;=<span class="number">0</span>; level--)	<span class="comment">//同上面的 insert</span></span><br><span class="line">        &#123;</span><br><span class="line">                <span class="keyword">while</span>(currNode-&gt;forwards[level]-&gt;key &lt; searchKey)</span><br><span class="line">                        currNode = currNode-&gt;forwards[level];</span><br><span class="line">                </span><br><span class="line">                update[level]=currNode;</span><br><span class="line">        &#125;</span><br><span class="line">        currNode = currNode-&gt;forwards[<span class="number">0</span>];	<span class="comment">//找到需要查找的位置</span></span><br><span class="line">        <span class="keyword">if</span>(currNode-&gt;key == searchKey)<span class="comment">//如果相等则说明存在需要删除</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> lv=<span class="number">0</span>;lv&lt;max_curr_level;lv++)	<span class="comment">//更新指针指向</span></span><br><span class="line">            &#123;</span><br><span class="line">                    <span class="keyword">if</span>(update[lv]-&gt;forwards[lv]!=currNode)  <span class="keyword">break</span>;</span><br><span class="line">                    update[lv]-&gt;forwards[lv]=currNode-&gt;forwards[lv];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">delete</span> currNode;    </span><br><span class="line"></span><br><span class="line">                <span class="comment">// update the max level</span></span><br><span class="line">            <span class="keyword">while</span>(max_curr_level &gt; <span class="number">0</span>  &amp;&amp; m_pHeader-&gt;forwards[max_curr_level]==<span class="literal">nullptr</span>)</span><br><span class="line">                max_curr_level--;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">const</span> NodeType* <span class="title">skiplist::find</span><span class="params">(K searchKey)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        NodeType* currNode = m_pHeader;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> level=max_curr_level<span class="number">-1</span>;level&gt;=<span class="number">0</span>;level--)	<span class="comment">//同上，但寻找无需存储走过的路径</span></span><br><span class="line">                <span class="keyword">while</span>(currNode-&gt;forwards[level]-&gt;key &lt; searchKey)</span><br><span class="line">                            currNode = currNode-&gt;forwards[level];</span><br><span class="line">        currNode = currNode-&gt;forwards[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">if</span>(currNode-&gt;key==searchKey)	<span class="comment">//找到返回 找到的节点</span></span><br><span class="line">                <span class="keyword">return</span> currNode;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> <span class="literal">nullptr</span>;	<span class="comment">//否则返回空</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">skiplist::empty</span><span class="params">()</span> <span class="keyword">const</span>	<span class="comment">//判断是否为空</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (m_pHeader-&gt;forwards[<span class="number">0</span>]==m_pTail);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">std</span>::<span class="built_in">string</span> <span class="title">skiplist::printList</span><span class="params">()</span>	<span class="comment">//打印</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">stringstream</span> sstr;</span><br><span class="line">        NodeTpye* currNode = m_pHeader-&gt;forwards[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">while</span>(currNode != m_pTail)</span><br><span class="line">        &#123;</span><br><span class="line">            sstr &lt;&lt; <span class="string">"("</span> &lt;&lt; currNode-&gt;key &lt;&lt; <span class="string">","</span> &lt;&lt; currNode-&gt;value &lt;&lt; <span class="string">")"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">            currNode = currNode-&gt;forwards[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sstr.str();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>  因为代码和上面图解有点差别，所以这里有几点需要说明：<br> 1、代码存储的是&lt;key,value&gt;的形式，因此不单单是上述单个值。key是用来比较的<br> 2、代码的头、尾节点存储的是特定的 <code>min_value</code> 和 <code>max_value</code> ，而不是图解中的 NULL，因此key需要有一个特定的范围</p>
+<h2 id="0X-30-后言"><a href="#0X-30-后言" class="headerlink" title="0X 30 后言"></a>0X 30 后言</h2><p>   需要说明一下的是，上面的内容，除了一堆骚话，大多是参考网上大佬的，希望大家不要建议。</p>
+<p>   最后贴上大佬们的文章链接，大家一起学习呀～</p>
+<p>  那我们就江湖再见了</p>
+<p><a href="https://lotabout.me/2018/skip-list/" target="_blank" rel="noopener">跳表──没听过但很犀利的数据结构</a></p>
+<p><a href="https://gist.github.com/unsuthee/4116663" target="_blank" rel="noopener">C++ Implementation of Skiplist</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E7%A8%8B%E5%BA%8F-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%AE%97%E6%B3%95/" rel="tag"># 程序=数据结构+算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/10/3.Linux%E4%B8%8B%E4%BD%BF%E7%94%A8C-%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%AE%9E%E7%8E%B0socket%E9%80%9A%E4%BF%A1/" rel="next" title="Linux下使用C++面向对象实现socket通信">
+                <i class="fa fa-chevron-left"></i> Linux下使用C++面向对象实现socket通信
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.ico"
+                alt="Rjszz" />
+            
+              <p class="site-author-name" itemprop="name">Rjszz</p>
+              <p class="site-description motion-element" itemprop="description">给岁月以文明，给时光以生命</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0X-00-前言"><span class="nav-number">1.</span> <span class="nav-text">0X 00 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X-10-Skiplist的设计初衷"><span class="nav-number">2.</span> <span class="nav-text">0X 10 Skiplist的设计初衷</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X-20-Skiplist的真面目"><span class="nav-number">3.</span> <span class="nav-text">0X 20 Skiplist的真面目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X-30-Skiplist的庐山真面目"><span class="nav-number">4.</span> <span class="nav-text">0X 30 Skiplist的庐山真面目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X-30-硬核编码——Skiplist的C-实现"><span class="nav-number">5.</span> <span class="nav-text">0X 30 硬核编码——Skiplist的C++实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0X-30-后言"><span class="nav-number">6.</span> <span class="nav-text">0X 30 后言</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rjszz</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+</body>
+</html>
